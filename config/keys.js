@@ -1,4 +1,4 @@
 module.exports = {
-    mongoURI: "mongodb://localhost:27017/reactdb",
+    mongoURI: "mongodb://admin:admin111@ds211309.mlab.com:11309/heroku_jp067nbb?authSource=heroku_jp067nbb&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false",
     secretOrKey: "secret"
 }
