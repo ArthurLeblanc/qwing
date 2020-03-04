@@ -2,7 +2,7 @@ let mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router();
 
-let commentaire = require('../Models/Commentaire')
+let commentaire = require('../models/Commentaire')
 
 // Retourne tous les commentaires d'un propos
 router.get('/:proposId', (req, res) => {

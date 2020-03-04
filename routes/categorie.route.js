@@ -2,8 +2,8 @@ let mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router();
 
-let categoriePropos = require('../Models/CategoriePropos')
-let categorieReponse = require('../Models/CategorieReponse')
+let categoriePropos = require('../models/CategoriePropos')
+let categorieReponse = require('../models/CategorieReponse')
 
 // Retourne toutes les catégories de propos
 router.get('/propos', (req, res) => {
