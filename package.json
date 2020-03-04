@@ -5,9 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && npm run build",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "client-install": "npm install --prefix client",
+    "client-install": "cd client && npm install",
+    "heroku-postbuild": "npm run client-install && npm run build",
+    "start": "node.server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",

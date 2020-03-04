@@ -30,6 +30,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 
+if (process.env.NODE_ENV === 'production')
+  app.use(express.static('client/build'))
+
 app.use('/api/users/', userRoute)
 app.use('/api/propos/', proposRoute)
 app.use('/api/reponses/', reponseRoute)
