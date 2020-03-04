@@ -30,8 +30,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 
-if (process.env.NODE_ENV === 'production')
-  app.use(express.static('client/build'))
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
 app.use('/api/users/', userRoute)
 app.use('/api/propos/', proposRoute)
@@ -41,7 +42,7 @@ app.use('/api/categories/', categorieRoute)
 
 
 // PORT
-const port = 7000;
+const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {
   console.log('Connected to port ' + port)
 })

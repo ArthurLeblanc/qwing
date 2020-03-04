@@ -6,13 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm run build",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "client-install": "cd client && npm install",
-    "heroku-postbuild": "npm run client-install && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
     "start": "node server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "prod": "concurrently \"npm run start\" \"npm run client\""
+    "client": "cd client && npm start",
+    "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon server.js\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
