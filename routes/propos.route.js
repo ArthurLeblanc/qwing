@@ -2,10 +2,11 @@ let mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router();
 
-// Propos Model
+// Models
 let ProposSchema = require('../models/Propos');
 let Reponse = require('../models/Reponse');
 let Commentaire = require('../models/Commentaire');
+let User = require('../models/User');
 
 // Retourne toutes les propos
 router.get('/', (req, res) => {
@@ -14,11 +15,26 @@ router.get('/', (req, res) => {
           return next(error)
       else
           res.json(data)
-  }).populate('categorie').populate('reponses.reponse')
+  }).populate('categorie').populate('reponses').populate('creator', '_id email pseudo').populate('commentaires')
 })
 
 // Créée un propos
-router.post('/create-propos', (req, res, next) => {
+router.post('/create-propos', async (req, res, next) => {
+  // Si un utilisateur est présent dans la requête
+  if (req.body.creator) {
+    // Vérifie que l'ID est valide
+    if (req.body.creator.length != 24)
+      return res.status(400).json({msg: 'ID de l\'utilisateur invalide'})
+      const _id = req.body.creator
+      try {
+        // Vérifie que l'utilisateur existe dans la base de données
+        let user = await User.findOne({ _id })
+        if (!user) return res.status(400).json({msg: 'Cet utilisateur n\'existe pas'})
+    } catch (error) {
+      console.error(error.message)
+      res.status(500).send("Erreur du serveur")
+    }
+  }
   ProposSchema.create(req.body, (error, data) => {
       if (error)
         return next(error)
@@ -28,13 +44,17 @@ router.post('/create-propos', (req, res, next) => {
 })
 
 // Ajoute une réponse à un propos existant
-router.put('/add-reponse', (req, res, next) => {
+router.put('/add-reponse', async (req, res, next) => {
   const propos = req.body.proposId
   if (propos.length != 24)
       return res.status(400).json({msg:'ID invalide'})
-  const existingPropos = ProposSchema.findById(propos)
-  if (!existingPropos)
-    return res.status(400).json({msg:'Ce propos n\' existe pas '})
+  try {
+    const existingPropos = await ProposSchema.findById(propos)
+    if (!existingPropos)
+      return res.status(400).json({msg:'Ce propos n\'existe pas '})
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
   const { contenu, categorie } = req.body
   rep = new Reponse({
     contenu,
@@ -51,13 +71,17 @@ router.put('/add-reponse', (req, res, next) => {
 })
 
 // Ajoute un commentaire à un propos existant
-router.put('/add-commentaire', (req, res, next) => {
+router.put('/add-commentaire', async (req, res, next) => {
   let propos = req.body.proposId
   if (propos.length != 24)
       return res.status(400).json({msg:'ID invalide'})
-  const existingPropos = ProposSchema.findById(propos)
-  if (!existingPropos)
-    return res.status(400).json({msg:'Ce propos n\' existe pas '})
+  try {
+    const existingPropos = ProposSchema.findById(propos)
+    if (!existingPropos)
+      return res.status(400).json({msg:'Ce propos n\' existe pas '})
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
   const contenu  = req.body.contenu
   com = new Commentaire({
     contenu,

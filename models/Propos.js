@@ -6,11 +6,7 @@ let proposSchema = new Schema({
     type: String,
     required: true
   },
-  like: {
-    type: Number,
-    default: 0
-  },
-  dislike: {
+  likes: {
     type: Number,
     default: 0
   },
@@ -21,7 +17,7 @@ let proposSchema = new Schema({
   },
   creator: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   reponses: [
       {

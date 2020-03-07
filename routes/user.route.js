@@ -32,7 +32,7 @@ router.get('/', login, async (req, res) => {
     }
 })
 
-// Retourne tous les propos d'un utilisateur
+// Retourne tous les propos d'un utilisateur (qu'il a créé)
 router.get('/:userId/propos', (req, res, next) => {
     const user = req.params.userId
     if (user.length != 24)
@@ -42,7 +42,7 @@ router.get('/:userId/propos', (req, res, next) => {
           return next(error)
       else
           res.json(data)
-    }).where('creator').equals(user)
+    }).where('creator').equals(user).populate('likesPropos').populate('likesCommentaires').populate('likesReponses')
   })
 
 // Route pour l'inscription

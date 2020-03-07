@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 let categorieReponseSchema = new Schema({
   contenu: {
-    type: String
+    type: String,
+    required: true
   }
 }, {
     collection: 'CategorieReponse'

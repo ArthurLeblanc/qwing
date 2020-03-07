@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-//const passwordHash = require("password-hash");
-//const jwt = require("jwt-simple");
-//const config = require("../config/config");
+const Schema = mongoose.Schema
 
 const userSchema = mongoose.Schema(
   {
@@ -19,7 +17,25 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true
-    }
+    },
+    likesPropos: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Propos'
+        }
+      ],
+    likesCommentaires: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Commentaire'
+        }
+      ],
+    likesReponses: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Reponse'
+        }
+      ]
   },
   { timestamps: { createdAt: "created_at" } }
 );
