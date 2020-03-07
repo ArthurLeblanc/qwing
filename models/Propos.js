@@ -7,10 +7,12 @@ let proposSchema = new Schema({
     required: true
   },
   like: {
-    type: Number
+    type: Number,
+    default: 0
   },
   dislike: {
-    type: Number
+    type: Number,
+    default: 0
   },
   categorie: {
       type: Schema.Types.ObjectId,
