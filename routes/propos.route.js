@@ -27,11 +27,11 @@ router.post('/create-propos', async (req, res, next) => {
     // Vérifie que l'ID est valide
     if (req.body.creator.length != 24)
       return res.status(400).json({msg: 'ID de l\'utilisateur invalide'})
-      const _id = req.body.creator
+      const email = req.body.creator
       const categorie = req.body.categorie
       try {
         // Vérifie que l'utilisateur existe dans la base de données
-        let user = await User.findOne({ _id })
+        let user = await User.findOne({ email })
         if (!user) return res.status(400).json({msg: 'Cet utilisateur n\'existe pas'})
 
         let categ = await categoriePropos.findOne({ _id: categorie })
