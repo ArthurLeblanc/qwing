@@ -92,9 +92,6 @@ router.put('/add-commentaire', async (req, res, next) => {
     const existingPropos = await ProposSchema.findById(propos)
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\' existe pas '})
-  } catch(err) {
-    res.status(500).send("Erreur du serveur")
-  }
   const contenu  = req.body.contenu
   com = new Commentaire({
     contenu,
@@ -107,6 +104,11 @@ router.put('/add-commentaire', async (req, res, next) => {
     else
       res.json(data)
   })
+
+  } catch(err) {
+    res.status(500).send(err)
+  }
+
 })
 
 // Retourne toutes les réponses d'un propos
