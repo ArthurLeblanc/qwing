@@ -82,11 +82,11 @@ router.put('/add-reponse', async (req, res, next) => {
 
 // Ajoute un commentaire à un propos existant
 router.put('/add-commentaire', async (req, res, next) => {
-  let propos = req.body.proposId
+  const propos = req.body.proposId
   if (propos.length != 24)
       return res.status(400).json({msg:'ID invalide'})
   try {
-    const existingPropos = ProposSchema.findById(propos)
+    const existingPropos = await ProposSchema.findById(propos)
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\' existe pas '})
   } catch(err) {
