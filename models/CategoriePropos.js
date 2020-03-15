@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 let categorieProposSchema = new Schema({
   contenu: { 
     type: String,
-    required: true
+    required: true,
+    unique: true
   }
 }, {
     collection: 'CategoriePropos'

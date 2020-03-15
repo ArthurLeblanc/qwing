@@ -24,7 +24,10 @@ let Propos = require('../models/Propos');
 // Route qui vérifie si un utilisateur est login via son token. Si oui, renvoie ses infos (sans le mdp) sinon ne renvoie rien
 router.get('/', login, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select("-password")
+        const user = await (await User.findById(req.user.id).select("-password")
+        .populate("likesPropos")
+        .populate("likesCommentaires")
+        .populate("likesReponses"))
         res.json(user)
     } catch (error) {
         console.error(error.message)
