@@ -126,9 +126,6 @@ router.put('/add-commentaire', async (req, res, next) => {
     }
   }
   const propos = req.body.proposId
-  console.log(req.body)
-  console.log(req.body.proposId)
-  console.log(req.body.contenu)
   if (propos.length != 24)
   return res.status(400).json({msg:'ID invalide'})
   try {
