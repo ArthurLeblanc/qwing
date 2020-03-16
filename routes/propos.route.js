@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
           return next(error)
       else
           res.json(data)
-  }).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo')
+  }).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo').populate({path: "reponses", populate: {path: "categorie", model: "CategorieReponse"}})
 })
 
 // Créée un propos
