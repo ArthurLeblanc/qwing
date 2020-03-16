@@ -126,9 +126,6 @@ router.put('/add-commentaire', async (req, res, next) => {
     }
   }
   const propos = req.body.proposId
-  console.log(req.body)
-  console.log(req.body.proposId)
-  console.log(req.body.contenu)
   if (propos.length != 24)
   return res.status(400).json({msg:'ID invalide'})
   try {
@@ -201,43 +198,58 @@ router.get('/:nbPropos', (req, res, next) => {
 // Ajoute un propos à la liste des propos aimés d'un utilisateur
 router.put('/like-propos', login, async (req, res, next) => {
   const propos = req.body.proposId
-  const user = await User.findById(req.user.id).select("-password")
   if (propos.length != 24)
       return res.status(400).json({msg:'ID invalide'})
   try {
+    const user = await User.findById(req.user.id).select("-password")
     const existingPropos = await ProposSchema.findById(propos)
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\' existe pas '})
-  } catch(err) {
-    res.status(500).send("Erreur du serveur")
-  }
+    if (user.likesPropos.includes(propos))
+      return res.status(400).json({msg:'Ce propos figure déjà dans la liste des propos aimés de cet utilisateur'})
+  let likes = existingPropos.likes
+  existingPropos.update({ $set: { likes: likes + 1 }}, (error, data) => {
+    if (error)
+      return next(error)
+  })
   user.update({ $push: { likesPropos: propos }}, (error, data) => {
     if (error)
       return next(error)
     else
       res.json(data)
   })
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
 })
 
 // Supprime un propos à la liste des propos aimés d'un utilisateur
 router.delete('/dislike-propos', login, async (req, res, next) => {
   const propos = req.body.proposId
-  const user = await User.findById(req.user.id).select("-password")
   if (propos.length != 24)
       return res.status(400).json({msg:'ID invalide'})
   try {
-    const existingPropos = await ProposSchema.findById(propos)
+    const user = await User.findById(req.user.id).select("-password")
+    const existingPropos = await ProposSchema.findById(propos).populate('likesPropos')
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\' existe pas '})
-  } catch(err) {
-    res.status(500).send("Erreur du serveur")
-  }
+    if (!user.likesPropos.includes(propos))
+      return res.status(400).json({msg:'Ce propos ne figure pas dans la liste des propos aimés de cet utilisateur'})
+      
+  let likes = existingPropos.likes
+  existingPropos.update({ $set: { likes: likes - 1 }}, (error, data) => {
+    if (error)
+      return next(error)
+  })
   user.update({ $pull: { likesPropos: propos }}, (error, data) => {
     if (error)
       return next(error)
     else
       res.json(data)
   })
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
 })
 
 module.exports = router;
