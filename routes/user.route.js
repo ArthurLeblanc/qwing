@@ -25,9 +25,9 @@ let Propos = require('../models/Propos');
 router.get('/', login, async (req, res) => {
     try {
         const user = await (await User.findById(req.user.id).select("-password")
-        .populate("likesPropos").populate([{path: "likesPropos", populate: {path: "categorie", model: "CategoriePropos"}}, {path: "likesPropos", populate: {path: "reponses", model: "Reponse"}}, {path: "likesPropos", populate: {path: "commentaires", model: "Commentaire"}}, {path: "likesPropos", populate: {path: "reponses", populate: {path: "categorie", model: "CategorieReponse"} ,model: "Reponse"}}])
-        .populate("likesCommentaires").populate({path: "likesCommentaires", populate: {path: "commentaires", model: "Reponse"}})
-        .populate("likesReponses")).populate({path: "likesReponses", populate: {path: "reponses", model: "Reponse"}})
+        .populate("likesPropos")
+        .populate("likesCommentaires")
+        .populate("likesReponses"))
         res.json(user)
     } catch (error) {
         console.error(error.message)
@@ -143,5 +143,74 @@ async (req, res) => {
         
     }
 })
+
+router.put('/edit-infos',
+    // Conditions pour que la requête soit validée
+    [
+        check('email', 'Entrez un email valide').isEmail(),
+    ],    
+    async (req, res) => {
+        const errors = validationResult(req)
+        // Si la requête n'est pas valide, on affiche les erreurs
+        if(!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() })
+        }
+        // Sinon on récupère les paramètres dans le body
+        const { email } = req.body
+        try {
+            // On check si l'utilisateur n'est pas déjà enregistré dans la base de données
+            var user = await User.findOne({ email })
+            if (!user)
+                return res.status(400).json({msg:'Cet utilisateur n\'existe pas'})
+            // Mise à jour de l'utilisateur
+            user.email = email
+            user.pseudo = pseudo
+    
+            // Cryptage du mot de passe pour la sauvegarde dans la base de données
+            const salt = await bcrypt.genSalt(10)
+            user.password = await bcrypt.hash(password, salt)
+            // Sauvegarde de l'utilisateur dans la base de données
+            await user.save()
+            res.send({user})
+        } catch (error) {
+            console.error(error.message)
+            res.status(500).send("Erreur du serveur")
+            
+        }
+    })
+
+    router.delete('/delete-account',
+    // Conditions pour que la requête soit validée
+    [
+        check('pseudo', 'Entrez un pseudo').not().isEmpty(),
+        check('password', 'Entrez un mot de passe d\'au moins 6 caractères').isLength({min: 6})
+    ],    
+    async (req, res) => {
+        const errors = validationResult(req)
+        // Si la requête n'est pas valide, on affiche les erreurs
+        if(!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() })
+        }
+        // Sinon on récupère les paramètres dans le body
+        const { email } = req.body
+        try {
+            // On check si l'utilisateur n'est pas déjà enregistré dans la base de données
+            User.remove({
+                email: req.body.email,
+              }, function (err, user) {
+                if (err)
+                  return console.error(err);
+    
+                console.log('User successfully removed from polls collection!');
+                res.status(200).send();
+    
+              });
+        } catch (error) {
+            console.error(error.message)
+            res.status(500).send("Erreur du serveur")
+            
+        }
+    })
+
 
 module.exports = router;
