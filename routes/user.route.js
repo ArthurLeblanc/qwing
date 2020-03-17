@@ -156,7 +156,7 @@ router.put('/edit-infos',
             return res.status(400).json({ error: errors.array() })
         }
         // Sinon on récupère les paramètres dans le body
-        const { email } = req.body
+        const { email, pseudo, password } = req.body
         try {
             // On check si l'utilisateur n'est pas déjà enregistré dans la base de données
             var user = await User.findOne({ email })
