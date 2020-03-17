@@ -25,9 +25,9 @@ let Propos = require('../models/Propos');
 router.get('/', login, async (req, res) => {
     try {
         const user = await (await User.findById(req.user.id).select("-password")
-        .populate("likesPropos")
-        .populate("likesCommentaires")
-        .populate("likesReponses"))
+        .populate("likesPropos").populate([{path: "likesPropos", populate: {path: "categorie", model: "CategoriePropos"}}, {path: "likesPropos", populate: {path: "reponses", model: "Reponse"}}, {path: "likesPropos", populate: {path: "commentaires", model: "Commentaire"}}, {path: "likesPropos", populate: {path: "reponses", populate: {path: "categorie", model: "CategorieReponse"} ,model: "Reponse"}}])
+        .populate("likesCommentaires").populate({path: "likesCommentaires", populate: {path: "commentaires", model: "Reponse"}})
+        .populate("likesReponses")).populate({path: "likesReponses", populate: {path: "reponses", model: "Reponse"}})
         res.json(user)
     } catch (error) {
         console.error(error.message)
