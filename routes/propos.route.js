@@ -38,25 +38,95 @@ router.post('/create-propos', async (req, res, next) => {
       console.error(err.message)     
     }
   }
-  const categorie = req.body.categorie
+  var categ = req.body.categorie
+  const contenu = req.body.contenu
   try {
     // Vérifie que l'utilisateur existe dans la base de données
+    let categorie = await categoriePropos.findOne({contenu: categ })
+    if (!categorie) return res.status(400).json({msg: 'Cette catégorie n\'existe pas'})
+    if (req.body.creator) {
+      creator = req.body.creator.id
+      propos = new ProposSchema({
+        contenu,
+        categorie,
+        creator
+      })
+    } else {
+      propos = new ProposSchema({
+        contenu,
+        categorie
+      })
+    }
+    console.log(propos)
+    propos.save((err, data) => {
+      if(err)
+        return next(error)
+      else
+        res.json(data)
+    })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send("Erreur du serveur")
+  }
+})
+
+// Modification d'un propos
+router.put('/edit-propos', login, async (req, res, next) => {
+  const categorie = req.body.categorie
+  const propos = req.body.proposId
+  if (propos.length != 24)
+    return res.status(400).json({msg:'ID invalide'})
+  try {
+    const user = await (await User.findById(req.user.id).select("-password"))
     if (!categorie)
       return res.status(400).json({msg:'Catégorie introuvable'})
     let categ = await categoriePropos.findOne({contenu: categorie })
     if (!categ) return res.status(400).json({msg: 'Cette catégorie n\'existe pas'})
     req.body.categorie = categ._id
-    console.log(req.body)
-  } catch (error) {
-  console.error(error.message)
-  res.status(500).send("Erreur du serveur")
-}
-  ProposSchema.create(req.body, (error, data) => {
+
+
+    const existingPropos = await ProposSchema.findById(propos).populate('creator')
+    if (!existingPropos)
+      return res.status(400).json({msg:'Ce propos n\'existe pas '})
+    if (existingPropos.creator.email != user.email)
+      return res.status(403).json({msg:'Vous n\'êtes pas autorisé à modifier ce propos'})
+    existingPropos.update(req.body, (error, data) => {
       if (error)
-        return next(error)
-      else
-        res.json(data)
-  })
+          return next(error)
+        else
+          res.json(data)
+    })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send("Erreur du serveur")
+  }
+})
+
+// Suppression d'un propos
+router.delete('/delete-propos', login, async (req, res, next) => {
+  const propos = req.body.proposId
+  if (propos.length != 24)
+    return res.status(400).json({msg:'ID invalide'})
+  try {
+    const user = await (await User.findById(req.user.id).select("-password"))
+    const existingPropos = await ProposSchema.findById(propos).populate('creator')
+    if (!existingPropos)
+      return res.status(400).json({msg:'Ce propos n\'existe pas '})
+    if (existingPropos.creator.email != user.email)
+      return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce propos'})
+    ProposSchema.findByIdAndRemove(existingPropos._id, (error, data) => {
+      if (error)
+          return next(error)
+      const response = {
+        message: "Le propos a bien été supprimé",
+        id: data._id
+      };
+      return res.status(200).send(response);
+    })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send("Erreur du serveur")
+  }
 })
 
 // Ajoute une réponse à un propos existant
@@ -66,6 +136,7 @@ router.put('/add-reponse', async (req, res, next) => {
   if (token) {
     try {
       const decodedToken = jwt.verify(token, keys.secretOrKey)
+      console.log(decodedToken)
       req.body.creator = decodedToken.user
     } catch(err) {
       console.error(err.message)     

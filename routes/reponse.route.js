@@ -3,38 +3,38 @@ let mongoose = require('mongoose'),
   router = express.Router();
 
 // Reponse Model
-let Reponse = require('../models/Reponse');
+let reponseSchema = require('../models/Reponse');
 
-// Retourne toutes les réponses pour un propos
-router.get('/:proposId', (req, res, next) => {
-    const idPropos = req.params.proposId.substring(9, req.params.proposId.length)
-    if (idPropos.length != 24)
-        return res.status(400).json({msg:'ID invalide'})
-    Reponse.find((error, data) => {
-      if (error)
-          return next(error)
-      else
-          res.json(data)
-  }).where('propos').equals(idPropos).populate('categorie').populate('propos')
-})
+let User = require('../models/User');
 
-// Crée une réponse pour un propos (contenu:String, catégorie:idRef, propos:idRef requis)
-router.post('/create-reponse', (req, res, next) => {
-    Reponse.create(req.body, (error, data) => {
-      if (error)
-        return next(error)
-      else
-        res.json(data)
+// Permet de vérifier si un utilisateur est connecté et si son token est valide
+const login = require('../middleware/login')
+
+  // Suppression d'une réponse
+  router.delete('/delete-reponse', login, async (req, res, next) => {
+    const rep = req.body.reponseId
+    if (rep.length != 24)
+      return res.status(400).json({msg:'ID invalide'})
+    try {
+      const user = await (await User.findById(req.user.id).select("-password"))
+      const reponse = await reponseSchema.findById(rep).populate('creator')
+      if (!reponse)
+        return res.status(400).json({msg:'Cette réponse n\'existe pas '})
+      if (reponse.creator.email != user.email)
+        return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer cette réponse'})
+        reponseSchema.findByIdAndRemove(reponse._id, (error, data) => {
+        if (error)
+            return next(error)
+        const response = {
+          message: "La réponse a bien été supprimé",
+          id: data._id
+        };
+        return res.status(200).send(response);
+      })
+    } catch (error) {
+      console.error(error.message)
+      res.status(500).send("Erreur du serveur")
+    }
   })
-})
-
-// Ajoute un commentaire à un propos existant
-router.put('/:proposId/add-commentaire' , (req, res, next) => {
-  const propos = Propos.findById(proposId)
-  if (!propos)
-    return res.status(400).json({msg:'Ce propos n\' existe pas '})
-  
-  //propos.update({ $push: { commentaires: }})
-})
 
 module.exports = router;

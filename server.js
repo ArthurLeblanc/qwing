@@ -9,7 +9,7 @@ const userRoute = require('./routes/user.route')
 const proposRoute = require('./routes/propos.route')
 const reponseRoute = require('./routes/reponse.route')
 const categorieRoute = require('./routes/categorie.route')
-//const commentaireRoute = require('./routes/commentaire.route')
+const commentaireRoute = require('./routes/commentaire.route')
 
 // Connecting mongoDB Database
 mongoose.Promise = global.Promise;
@@ -38,7 +38,7 @@ app.use('/api/users/', userRoute)
 app.use('/api/propos/', proposRoute)
 app.use('/api/reponses/', reponseRoute)
 app.use('/api/categories/', categorieRoute)
-//app.use('/api/commentaires/', commentaireRoute)
+app.use('/api/commentaires/', commentaireRoute)
 
 
 // PORT
