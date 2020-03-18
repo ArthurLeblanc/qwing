@@ -30,7 +30,9 @@ router.get('/', login, async (req, res) => {
                                             {path: "likesPropos", populate: {path: "commentaires", model: "Commentaire"}}, 
                                             {path: "likesPropos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}, ])
         .populate("likesCommentaires").populate({path: "likesCommentaires", populate: {path: "commentaires", model: "Reponse"}})
-        .populate("likesReponses")).populate({path: "likesReponses", populate: {path: "reponses", model: "Reponse"}})
+        .populate("dislikesCommentaires").populate({path: "dislikesCommentaires", populate: {path: "commentaires", model: "Reponse"}})
+        .populate("likesReponses").populate({path: "likesReponses", populate: {path: "reponses", model: "Reponse"}})
+        .populate("dislikesReponses").populate({path: "dislikesReponses", populate: {path: "reponses", model: "Reponse"}}))
         res.json(user)
     } catch (error) {
         console.error(error.message)
@@ -39,16 +41,28 @@ router.get('/', login, async (req, res) => {
 })
 
 // Retourne tous les propos d'un utilisateur (qu'il a créé)
-router.get('/:userId/propos', (req, res, next) => {
-    const user = req.params.userId
-    if (user.length != 24)
-        return res.status(400).json({msg:'ID invalide'})
+router.get('/propos',   
+    [
+        check('email', 'Entrez un email valide').isEmail(),
+    ], 
+
+    async (req, res, next) => {
+
+    const email = req.body.email
+    let user = await User.findOne({ email })
+    if (!user)
+        return res.status(400).json({msg:'Cet utilisateur n\'existe pas'})
     Propos.find((error, data) => {
       if (error)
           return next(error)
       else
           res.json(data)
-    }).where('creator').equals(user).populate('likesPropos').populate('likesCommentaires').populate('likesReponses')
+    }).where('creator').equals(user._id).populate('categorie')
+    .populate('reponses')
+    .populate('commentaires')
+    .populate('creator', '_id email pseudo')
+    .populate({path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]})
+    .populate({path: "commentaires", populate: {path: "creator", model: "User"}})
   })
 
 // Route pour l'inscription

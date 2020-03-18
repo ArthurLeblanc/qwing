@@ -30,7 +30,19 @@ const userSchema = mongoose.Schema(
           ref: 'Commentaire'
         }
       ],
+    dislikesCommentaires: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Commentaire'
+        }
+      ],    
     likesReponses: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Reponse'
+        }
+      ],
+    dislikesReponses: [
         {
           type: Schema.Types.ObjectId,
           ref: 'Reponse'
