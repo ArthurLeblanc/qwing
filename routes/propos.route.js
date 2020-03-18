@@ -23,7 +23,12 @@ router.get('/', (req, res) => {
           return next(error)
       else
           res.json(data)
-  }).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo').populate({path: "reponses", populate: {path: "categorie", model: "CategorieReponse"}})
+  }).populate('categorie')
+    .populate('reponses')
+    .populate('commentaires')
+    .populate('creator', '_id email pseudo')
+    .populate({path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]})
+    .populate({path: "commentaires", populate: {path: "creator", model: "User"}})
 })
 
 // Créée un propos
@@ -136,7 +141,6 @@ router.put('/add-reponse', async (req, res, next) => {
   if (token) {
     try {
       const decodedToken = jwt.verify(token, keys.secretOrKey)
-      console.log(decodedToken)
       req.body.creator = decodedToken.user
     } catch(err) {
       console.error(err.message)     
