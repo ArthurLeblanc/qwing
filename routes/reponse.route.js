@@ -87,7 +87,7 @@ router.put('/dislike-reponse', login, async (req, res, next) => {
     if (!existingReponse)
       return res.status(400).json({msg:'Cette réponse n\' existe pas '})
     if (user.dislikesReponses.includes(reponse))
-      return res.status(400).json({msg:'Cette réponse figure déjà dans la liste des réponses aimées de cet utilisateur'})
+      return res.status(400).json({msg:'Cette réponse figure déjà dans la liste des réponses non aimées de cet utilisateur'})
     if (user.likesReponses.includes(reponse)) {
       let likes = existingReponse.likes
       existingReponse.update({ $set: { likes: likes - 1 }}, (error, data) => {

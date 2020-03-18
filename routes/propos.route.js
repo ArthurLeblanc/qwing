@@ -309,7 +309,7 @@ router.delete('/dislike-propos', login, async (req, res, next) => {
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\' existe pas '})
     if (!user.likesPropos.includes(propos))
-      return res.status(400).json({msg:'Ce propos ne figure pas dans la liste des propos aimés de cet utilisateur'})
+      return res.status(400).json({msg:'Ce propos ne figure pas dans la liste des propos non aimés de cet utilisateur'})
       
   let likes = existingPropos.likes
   existingPropos.update({ $set: { likes: likes - 1 }}, (error, data) => {

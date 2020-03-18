@@ -60,4 +60,82 @@ router.put('/edit-commentaire', login, async (req, res, next) => {
     }
   })
 
+// Ajoute un commentaire à la liste des commentaires aimés d'un utilisateur
+router.put('/like-commentaire', login, async (req, res, next) => {
+  const commentaire = req.body.commentaireId
+  if (commentaire.length != 24)
+      return res.status(400).json({msg:'ID invalide'})
+  try {
+    const user = await User.findById(req.user.id).select("-password")
+    const existingCommentaire = await commentaireSchema.findById(commentaire)
+    if (!existingCommentaire)
+      return res.status(400).json({msg:'Ce commentaire n\' existe pas '})
+    if (user.likesCommentaires.includes(commentaire))
+      return res.status(400).json({msg:'Ce commentaire figure déjà dans la liste des commentaires aimés de cet utilisateur'})
+    if (user.dislikesCommentaires.includes(commentaire)) {
+      let dislikes = existingCommentaire.dislikes
+      existingCommentaire.update({ $set: { dislikes: dislikes - 1 }}, (error, data) => {
+        if (error)
+          return next(error)
+      })
+      user.update({ $pull: { dislikesCommentaires: commentaire }}, (error, data) => {
+      if (error)
+        return next(error)
+      })
+    }
+  let likes = existingCommentaire.likes
+  existingCommentaire.update({ $set: { likes: likes + 1 }}, (error, data) => {
+    if (error)
+      return next(error)
+  })
+  user.update({ $push: { likesCommentaires: commentaire }}, (error, data) => {
+    if (error)
+      return next(error)
+    else
+      res.json(data)
+  })
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
+})
+
+// Supprime un commentaire à la liste des commentaires aimés d'un utilisateur
+router.put('/dislike-commentaire', login, async (req, res, next) => {
+  const commentaire = req.body.commentaireId
+  if (commentaire.length != 24)
+      return res.status(400).json({msg:'ID invalide'})
+  try {
+    const user = await User.findById(req.user.id).select("-password")
+    const existingCommentaire = await commentaireSchema.findById(commentaire)
+    if (!existingCommentaire)
+      return res.status(400).json({msg:'Ce commentaire n\' existe pas '})
+    if (user.dislikesCommentaires.includes(commentaire))
+      return res.status(400).json({msg:'Ce commentaire figure déjà dans la liste des commentaires non aimés de cet utilisateur'})
+    if (user.likesCommentaires.includes(commentaire)) {
+      let likes = existingCommentaire.likes
+      existingCommentaire.update({ $set: { likes: likes - 1 }}, (error, data) => {
+        if (error)
+          return next(error)
+      })
+      user.update({ $pull: { likesCommentaires: commentaire }}, (error, data) => {
+      if (error)
+        return next(error)
+      })
+    }
+  let dislikes = existingCommentaire.dislikes
+  existingCommentaire.update({ $set: { dislikes: dislikes + 1 }}, (error, data) => {
+    if (error)
+      return next(error)
+  })
+  user.update({ $push: { dislikesCommentaires: commentaire }}, (error, data) => {
+    if (error)
+      return next(error)
+    else
+      res.json(data)
+  })
+  } catch(err) {
+    res.status(500).send("Erreur du serveur")
+  }
+})
+
 module.exports = router
