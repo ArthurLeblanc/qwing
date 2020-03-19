@@ -33,11 +33,13 @@ router.get('/', login, async (req, res) => {
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                        {path: "likesCommentaires", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}},
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}])
         .populate("dislikesCommentaires").populate([{path: "dislikesCommentaires", populate: [{path: "propos", model: "Propos"}, {path: "creator", model: "User"}]},  
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
-                                            {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                            {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}},
+                                            {path: "likesCommentaires", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}}, 
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}])
         .populate("likesReponses").populate([{path: "likesReponses", populate: [{path: "propos", model: "Propos"}, {path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]},  
                                     {path: "likesReponses", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
