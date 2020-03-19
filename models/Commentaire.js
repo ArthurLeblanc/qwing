@@ -24,8 +24,8 @@ let commentaireSchema = new Schema({
     required: true
   }
 }, { 
-    collection: 'Commentaire'
-  }, { timestamps: { createdAt: "created_at" } 
+    collection: 'Commentaire',
+    timestamps: {createdAt: "created_at"}
 })
 
 module.exports = mongoose.model('Commentaire', commentaireSchema)
