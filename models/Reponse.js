@@ -30,6 +30,7 @@ let reponseSchema = new Schema({
   }
 }, {
     collection: 'Reponse'
-  })
+  },{ timestamps: { createdAt: "created_at" } 
+})
 
 module.exports = mongoose.model('Reponse', reponseSchema)
