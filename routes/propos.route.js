@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
     .populate('creator', '_id email pseudo')
     .populate({path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]})
     .populate({path: "commentaires", populate: {path: "creator", model: "User"}})
+    .sort({likes: 1})
 })
 
 // Créée un propos

@@ -40,6 +40,8 @@ const login = require('../middleware/login')
   // Ajoute une réponse à la liste des réponses aimées d'un utilisateur
 router.put('/like-reponse', login, async (req, res, next) => {
   const reponse = req.body.reponseId
+  console.log(req.body)
+  console.log(req.user)
   if (reponse.length != 24)
       return res.status(400).json({msg:'ID invalide'})
   try {
