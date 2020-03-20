@@ -2,7 +2,8 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 const headers = {
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin" : "*"
 };
 const burl = "http://localhost:4000/api";
 
@@ -51,17 +52,17 @@ export default {
   },
 
   like: function(send){
-    return axios.put(`${burl}/propos/like-propos`, send, { headers: headers, 'auth-token' : token  });
+    return axios.put(`${burl}/propos/like-propos`, send, { headers: headers});
   },
 
   dislike: function(send){
-    return axios.put(`${burl}/propos/dislike-propos`, send, { headers: headers, 'auth-token' : token  });
+    return axios.put(`${burl}/propos/dislike-propos`, send, { headers: headers });
   },
 
   /*----------------- COMMENTAIRE --------------*/
 
   addCommentaire: function(send){
-    return axios.put(`${burl}/propos/add-commentaire `, send, { headers: headers, token : token });
+    return axios.put(`${burl}/propos/add-commentaire`, send, { headers: headers, token : token });
   },
 
   getAllCommentaire: function(proposId){
@@ -71,7 +72,7 @@ export default {
   /*----------------- Reponse --------------*/
 
   addReponse: function(send){
-    return axios.put(`${burl}/propos/add-reponse `, send, { headers: headers, token : token });
+    return axios.put(`${burl}/propos/add-reponse`, send, { headers: headers, token : token });
   },
 
   getAllReponse: function(proposId){
@@ -93,7 +94,7 @@ export default {
   },
 
   getAllCatReponse: function(){
-    return axios.get(`${burl}/categories/reponse`, { headers: headers });
+    return axios.get(`${burl}/categories/reponses`, { headers: headers });
   },
 
   

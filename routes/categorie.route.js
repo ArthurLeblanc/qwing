@@ -16,7 +16,7 @@ router.get('/propos', (req, res) => {
 })
 
 // Ajoute une catégorie de propos
-router.route('/create-categorie-propos').post((req, res, next) => {
+router.post('/create-categorie-propos').post((req, res, next) => {
     categoriePropos.create(req.body, (error, data) => {
         if (error) 
             return next(error)
@@ -37,7 +37,7 @@ router.get('/reponses', (req, res) => {
 })
 
 // Ajoute une catégorie de réponses
-router.route('/create-categorie-reponse').post((req, res, next) => {
+router.post('/create-categorie-reponse').post((req, res, next) => {
     categorieReponse.create(req.body, (error, data) => {
         if (error) 
             return next(error)

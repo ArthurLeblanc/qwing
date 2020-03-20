@@ -9,7 +9,6 @@ export class CatPropos extends React.Component {
     this.state = {
       contenu: "",
       allCatPropos : [],
-
       allCatReponse : []
   	}
 
@@ -36,22 +35,20 @@ export class CatPropos extends React.Component {
   }
 
   send = async () => {
-    const { contenu} = this.state;
+    const contenu = this.state;
     if (!contenu || contenu.length === 0) return;
     try {
-	  const { data } = await API.addCatPropos({ contenu});
-      window.location = "/dashboard";
+	    API.addCatPropos(contenu);
     } catch (error) {
       console.error(error);
     }
   };
 
   addReponse = async () => {
-    const { contenu} = this.state;
+    const contenu = this.state;
     if (!contenu || contenu.length === 0) return;
     try {
-	  const { data } = await API.addCatReponse({ contenu});
-      window.location = "/dashboard";
+	    API.addCatReponse(contenu);
     } catch (error) {
       console.error(error);
     }
@@ -64,7 +61,7 @@ export class CatPropos extends React.Component {
   };
   
   render() {
-    const {contenu, allCatPropos} = this.state;
+    const {contenu, allCatPropos, allCatReponse} = this.state;
     return (
       <div className = "Page">
         <div className = "menu">
@@ -90,24 +87,15 @@ export class CatPropos extends React.Component {
             />
           </FormGroup>
 
-          <Button onClick={this.send} block bsSize="large" type="submit">
+          <Button onClick={ () => this.send} block bsSize="large" type="submit">
             Ajouter la categorie Propos
           </Button>
 
-          <FormGroup controlId="contenu" bsSize="large">
-            <ControlLabel>CategorieReponse</ControlLabel>
-            <FormControl
-              autoFocus
-              type="contenu"
-              value={contenu}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-
-          <Button onClick={this.addReponse} block bsSize="large" type="submit">
+          <Button onClick={ () => this.addReponse} block bsSize="large" type="submit">
             Ajouter la categorie Rep
           </Button>
 
+          <div> ---- CATEGORIE PROPOS ---- </div>
           {
             allCatPropos.map
               (CatPropos => 
@@ -120,6 +108,21 @@ export class CatPropos extends React.Component {
                 }
               )
           }
+          <div> ---- CATEGORIE REPONSE ---- </div>
+
+          {
+            allCatReponse.map
+              (CatReponse => 
+                {
+                  return(
+                    <div className = "Catpropos">
+                      {CatReponse.contenu}
+                    </div>
+                  )
+                }
+              )
+          }
+
         </div>
       </div>
 	)

@@ -313,6 +313,7 @@ router.put('/like-propos', login, async (req, res, next) => {
     if (error)
       return next(error)
     else
+      console.log(res.text())
       res.json(data)
   })
   } catch(err) {

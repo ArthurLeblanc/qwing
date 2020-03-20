@@ -37,7 +37,8 @@ export class Dashboard extends React.Component {
 		  <ul>
 			<li><a className="active" href= "/dashboard">Home</a></li>
 			<li><a href="/Propos">Propos</a></li>
-			<li><a href="#reponses">Reponses</a></li>
+			<li><a href="/signup">Register</a></li>
+			<li><a href="#compte">Mon Compte</a></li>
 			<li><a href="#about">About</a></li>
 			<Button onClick={this.disconnect} bsSize="large" type="submit">
 					Se deconnecter
