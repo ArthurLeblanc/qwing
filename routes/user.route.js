@@ -27,27 +27,27 @@ router.get('/', login, async (req, res) => {
         const user = await (await User.findById(req.user.id).select("-password")
         .populate("likesPropos").populate([{path: "likesPropos", populate: {path: "categorie", model: "CategoriePropos"}}, 
                                             {path: "likesPropos", populate: {path: "reponses", model: "Reponse"}}, 
-                                            {path: "likesPropos", populate: {path: "commentaires", model: "Commentaire"}}, 
+                                            {path: "likesPropos", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}},
                                             {path: "likesPropos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}, ])
-        .populate("likesCommentaires").populate([{path: "likesCommentaires", populate: {path: "propos", model: "Propos"}},  
+        .populate("likesCommentaires").populate([{path: "likesCommentaires", populate: [{path: "propos", model: "Propos"}, {path: "creator", model: "User"}]}, 
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
-                                        {path: "likesCommentaires", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                        {path: "likesCommentaires", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}},
                                         {path: "likesCommentaires", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}])
-        .populate("dislikesCommentaires").populate([{path: "dislikesCommentaires", populate: {path: "propos", model: "Propos"}},  
+        .populate("dislikesCommentaires").populate([{path: "dislikesCommentaires", populate: [{path: "propos", model: "Propos"}, {path: "creator", model: "User"}]},  
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
-                                            {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                            {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}}, 
                                             {path: "dislikesCommentaires", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}])
-        .populate("likesReponses").populate([{path: "likesReponses", populate: [{path: "propos", model: "Propos"}, {path: "categorie", model: "CategorieReponse"}]},  
+        .populate("likesReponses").populate([{path: "likesReponses", populate: [{path: "propos", model: "Propos"}, {path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]},  
                                     {path: "likesReponses", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                     {path: "likesReponses", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
-                                    {path: "likesReponses", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                    {path: "likesReponses", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}}, 
                                     {path: "likesReponses", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}])
-        .populate("dislikesReponses").populate([{path: "dislikesReponses", populate: [{path: "propos", model: "Propos"}, {path: "categorie", model: "CategorieReponse"}]},  
+        .populate("dislikesReponses").populate([{path: "dislikesReponses", populate: [{path: "propos", model: "Propos"}, {path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}]},  
                                         {path: "dislikesReponses", populate: {path: "propos", populate: {path: "categorie", model: "CategoriePropos"}}}, 
                                         {path: "dislikesReponses", populate: {path: "propos", populate: {path: "creator", model: "User"}}}, 
-                                        {path: "dislikesReponses", populate: {path: "propos", populate: {path: "commentaires", model: "Commentaire"}}}, 
+                                        {path: "dislikesReponses", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}},
                                         {path: "dislikesReponses", populate: {path: "propos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}}]))
         res.json(user)
     } catch (error) {
