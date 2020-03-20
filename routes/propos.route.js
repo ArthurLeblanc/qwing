@@ -32,6 +32,27 @@ router.get('/', (req, res) => {
     .sort({likes: -1})
 })
 
+// Retourne les propos TOP 5
+router.get('/top5', (req, res) => {
+  ProposSchema.find((error, data) => {
+    if (error)
+        return next(error)
+    else
+        res.json(data)
+}).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo')
+})
+
+// Retourne le propos correspondant à l'id
+router.get('/:proposId', (req, res, next) => {
+  const proposId = req.params.proposId
+  ProposSchema.findOne((error, data) => {
+      if (error)
+          return next(error)
+      else
+          res.json(data)
+  }).where('_id').equals(proposId)
+})
+
 // Créée un propos
 router.post('/create-propos', async (req, res, next) => {
   const token = req.header('auth-token')

@@ -51,7 +51,7 @@ export default {
   },
 
   like: function(send){
-    return axios.put(`${burl}/propos/like/like-propos`, send, { headers: headers, 'auth-token' : token  });
+    return axios.put(`${burl}/propos/like-propos`, send, { headers: headers, 'auth-token' : token  });
   },
 
   dislike: function(send){
