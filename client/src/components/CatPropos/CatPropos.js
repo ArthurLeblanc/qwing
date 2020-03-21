@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../../utils/API";
+import { Header } from "../Permanent/Header";
 
 export class CatPropos extends React.Component {
 
@@ -64,18 +65,7 @@ export class CatPropos extends React.Component {
     const {contenu, allCatPropos, allCatReponse} = this.state;
     return (
       <div className = "Page">
-        <div className = "menu">
-          <h1>Qwing</h1>
-          <ul>
-            <li><a className="active" href= "/dashboard">Home</a></li>
-            <li><a href="#propos">Propos</a></li>
-            <li><a href="#reponses">Reponses</a></li>
-            <li><a href="#about">About</a></li>
-            <Button onClick={this.disconnect} bsSize="large" type="submit">
-                  Se deconnecter
-            </Button>
-          </ul>
-        </div>
+        <Header />
         <div className="addPropos">
           <FormGroup controlId="contenu" bsSize="large">
             <ControlLabel>Categorie</ControlLabel>

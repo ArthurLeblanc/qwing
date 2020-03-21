@@ -4,6 +4,7 @@ import API from "../../utils/API";
 import 'materialize-css/dist/css/materialize.min.css'
 import { CatPropos } from "../CatPropos/CatPropos";
 import { Timestamp } from "mongodb";
+import { Header } from "../Permanent/Header";
 
 export class Commentaire extends React.Component {
 
@@ -58,18 +59,7 @@ export class Commentaire extends React.Component {
     const { contenu, propos, allCommentaires} = this.state;
     return (
       <div className = "Page">
-        <div className = "menu">
-          <h1>Qwing</h1>
-          <ul>
-            <li><a className="active" href= "/dashboard">Home</a></li>
-            <li><a href="/propos">Propos</a></li>
-            <li><a href="#reponses">Reponses</a></li>
-            <li><a href="#about">About</a></li>
-            <Button onClick={this.disconnect} bsSize="large" type="submit">
-                  Se deconnecter
-            </Button>
-          </ul>
-        </div>
+        <Header />
         <div className="addPropos">
           <h3>Ecrivez votre commentaire</h3>
           <FormGroup controlId="contenu" bsSize="large">

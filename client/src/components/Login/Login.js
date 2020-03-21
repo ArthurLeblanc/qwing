@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../../utils/API";
+import { Header } from "../Permanent/Header";
 
 export class Login extends React.Component {
 
@@ -11,6 +12,7 @@ export class Login extends React.Component {
 
   send = async () => {
     const { email, password } = this.state;
+    console.log(email)
     if (!email || email.length === 0) {
       return;
     }
@@ -35,33 +37,33 @@ export class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (
-      <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            value={password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <Button onClick={() => this.send} block bsSize="large" type="submit">
-          Connexion
-        </Button>
-        <Button onClick={() => window.location = "/dashboard"} block bsSize="large" type="submit">
-          Mode hors-ligne
-        </Button>
-        <Button onClick={() => window.location = "/signup"} block bsSize="large" type="submit">
-          Inscription
-        </Button>
+      <div>
+        <Header />
+        <div className="Login">
+          <FormGroup controlId="email" bsSize="large">
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              autoFocus
+              type="email"
+              value={email}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="password" bsSize="large">
+            <ControlLabel>Password</ControlLabel>
+            <FormControl
+              value={password}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <Button onClick={this.send} block bsSize="large" type="submit">
+            Connexion
+          </Button>
+          <Button onClick={() => window.location = "/signup"} block bsSize="large" type="submit">
+            Inscription
+          </Button>
+        </div>
       </div>
 	)
   }
