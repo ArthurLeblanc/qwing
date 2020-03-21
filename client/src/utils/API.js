@@ -6,6 +6,7 @@ const headers = {
   "Access-Control-Allow-Origin" : "*",
   "auth-token" : token
 };
+
 const burl = "http://localhost:4000/api";
 
 export default {
@@ -37,7 +38,10 @@ export default {
 
   /*----------------- PROPOS --------------*/
   addPropos: function(send){
-    return axios.post(`${burl}/propos/create-propos`, send, { headers: headers, token : token });
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.post(`${burl}/propos/create-propos`, send, { headers: headers });
   },
 
   getAllPropos: function(){
@@ -52,18 +56,27 @@ export default {
     return axios.get(`${burl}/propos/top5`, { headers: headers });
   },
 
-  like: function({"proposId" : proposId}){
-    return axios.put(`${burl}/propos/like-propos`, proposId, { headers: headers});
+  like: function(send){
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.put(`${burl}/propos/like-propos`,  send, { headers: headers });
   },
 
-  dislike: function({"proposId" : proposId}){
-    return axios.delete(`${burl}/propos/dislike-propos`, proposId, { headers: headers });
+  dislike: function(send){
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.delete(`${burl}/propos/dislike-propos`, {headers: headers, data: send});
   },
 
   /*----------------- COMMENTAIRE --------------*/
 
   addCommentaire: function(send){
-    return axios.put(`${burl}/propos/add-commentaire`, send, { headers: headers, token : token });
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.put(`${burl}/propos/add-commentaire`, send, { headers: headers });
   },
 
   getAllCommentaire: function(proposId){
@@ -73,7 +86,10 @@ export default {
   /*----------------- Reponse --------------*/
 
   addReponse: function(send){
-    return axios.put(`${burl}/propos/add-reponse`, send, { headers: headers, token : token });
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.put(`${burl}/propos/add-reponse`, send, { headers: headers });
   },
 
   getAllReponse: function(proposId){

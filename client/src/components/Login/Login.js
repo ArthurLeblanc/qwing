@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../../utils/API";
+import { Header } from "../Permanent/Header";
 
 export class Login extends React.Component {
 
@@ -11,6 +12,7 @@ export class Login extends React.Component {
 
   send = async () => {
     const { email, password } = this.state;
+    console.log(email)
     if (!email || email.length === 0) {
       return;
     }

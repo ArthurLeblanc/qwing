@@ -1,4 +1,4 @@
-/* BARRE DE NAVIGATION */
+/* BARRE DE NAVIGATION 
 ul {
 	list-style-type: none;
 	margin: 0;
@@ -27,4 +27,4 @@ li a:hover:not(.active) {
 	background-color: #4CAF50;
 }
 
-/* FIN BARRE DE NAVIGATION */
+ FIN BARRE DE NAVIGATION */
