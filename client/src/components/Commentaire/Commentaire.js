@@ -37,6 +37,13 @@ export class Commentaire extends React.Component {
   	  
   }
 
+  like = async(proposId) => {
+  	await API.like(proposId);
+  }
+  dislike = async(proposId) => {
+  	await API.dislike(proposId);
+  }
+
   send = async () => {
     const { contenu, proposId} = this.state;
     if (!contenu || contenu.length === 0) return;
@@ -98,16 +105,24 @@ export class Commentaire extends React.Component {
                   <a>retour aux propos</a>
                   <a>Reponses</a>
                 </div>
+                <div className="card-action">
+                  <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                    Like
+                  </Button>
+                  <Button onClick={() => this.dislike(propos._id)} block bsSize="large" type="submit">
+                    Dislike
+                  </Button>
+                </div>                
               </div>
             </div>
           </div>
           
           {
             allCommentaires.map
-              (commentaire => 
+              ((commentaire, i) => 
                 {
                   return(
-                    <div className="row">
+                    <div className="row" key={i}>
                       <div className="col s12 m6">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">

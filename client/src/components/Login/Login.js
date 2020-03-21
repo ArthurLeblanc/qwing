@@ -53,7 +53,7 @@ export class Login extends React.Component {
             type="password"
           />
         </FormGroup>
-        <Button onClick={() => this.send} block bsSize="large" type="submit">
+        <Button onClick={this.send} block bsSize="large" type="submit">
           Connexion
         </Button>
         <Button onClick={() => window.location = "/dashboard"} block bsSize="large" type="submit">

@@ -305,7 +305,7 @@ router.put('/like-propos', login, async (req, res, next) => {
     if (user.likesPropos.includes(propos))
       return res.status(400).json({msg:'Ce propos figure déjà dans la liste des propos aimés de cet utilisateur'})
   let likes = existingPropos.likes
-  existingPropos.update({ $set: { likes: likes + 1 }}, (error, data) => {
+    existingPropos.update({ $set: { likes: likes + 1 }}, (error, data) => {
     if (error)
       return next(error)
   })
@@ -313,7 +313,6 @@ router.put('/like-propos', login, async (req, res, next) => {
     if (error)
       return next(error)
     else
-      console.log(res.text())
       res.json(data)
   })
   } catch(err) {

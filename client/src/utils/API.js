@@ -3,7 +3,8 @@ const token = localStorage.getItem("token");
 
 const headers = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin" : "*"
+  "Access-Control-Allow-Origin" : "*",
+  "auth-token" : token
 };
 const burl = "http://localhost:4000/api";
 
@@ -51,12 +52,12 @@ export default {
     return axios.get(`${burl}/propos/top5`, { headers: headers });
   },
 
-  like: function(send){
-    return axios.put(`${burl}/propos/like-propos`, send, { headers: headers});
+  like: function({"proposId" : proposId}){
+    return axios.put(`${burl}/propos/like-propos`, proposId, { headers: headers});
   },
 
-  dislike: function(send){
-    return axios.put(`${burl}/propos/dislike-propos`, send, { headers: headers });
+  dislike: function({"proposId" : proposId}){
+    return axios.delete(`${burl}/propos/dislike-propos`, proposId, { headers: headers });
   },
 
   /*----------------- COMMENTAIRE --------------*/

@@ -31,10 +31,10 @@ export class Propos extends React.Component {
   }
 
   like = async(proposId) => {
-  	const {test} = await API.like(proposId);
+  	await API.like(proposId);
   }
   dislike = async(proposId) => {
-  	const {test} =await API.dislike(proposId);
+  	await API.dislike(proposId);
   }
 
   getAllPropos = async() => {
@@ -116,10 +116,10 @@ export class Propos extends React.Component {
           
           {
             allPropos.map
-              (propos => 
+              ( (propos, i, i1, i2) => 
                 {
                   return(
-                    <div className="row">
+                    <div className="row" key = {i}>
                       <div className="col s12 m6">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
@@ -131,10 +131,10 @@ export class Propos extends React.Component {
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
                           <div className="card-action">
-                            <Button onClick={ () => this.like(propos._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.like(propos._id)} key = {i1} block bsSize="large" type="submit">
                               Like
                             </Button>
-                            <Button onClick={ () =>this.dislike(propos._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.dislike(propos._id)} key = {i2}  block bsSize="large" type="submit">
                               Dislike
                             </Button>
                           </div>

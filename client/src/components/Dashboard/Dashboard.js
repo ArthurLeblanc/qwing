@@ -60,10 +60,10 @@ export class Dashboard extends React.Component {
 		  <h3>Top 5 des propos</h3>
 		  {
             top5.map
-              (propos => 
+              ( (propos, i) => 
                 {
                   return(
-                    <div className="row">
+                    <div className="row" key={i}>
                       <div className="col s12 m6">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
