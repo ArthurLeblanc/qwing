@@ -31,7 +31,6 @@ export class CatPropos extends React.Component {
 
   getAllCatReponse = async() => {
     const callCatReponse= await API.getAllCatReponse();
-  //console.log(callPropos.data)
     this.setState({allCatReponse : callCatReponse.data})
   }
 

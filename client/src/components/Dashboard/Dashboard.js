@@ -12,10 +12,18 @@ export class Dashboard extends React.Component {
 	}
 	
 	this.getTop5 = this.getTop5.bind(this);
-	
+	this.like = this.like.bind(this)
+	this.dislike = this.dislike.bind(this)
+	  
 	this.getTop5();
-
   }
+
+  	like = async(proposId) => {
+		await API.like(proposId);
+	}
+	dislike = async(proposId) => {
+		await API.dislike(proposId);
+	}
 
   getTop5 = async() => {
 	const cTop5 = await API.getAllPropos();
@@ -46,6 +54,7 @@ export class Dashboard extends React.Component {
 		  <Button onClick={ () => window.location = "/catPropos"} bsSize="large" type="submit">
 			ajouter une categorie (admin)
 		  </Button>
+
 		  <h3>Les plus populaires</h3>
 			<div class="divider"></div>
 			<div className="container" >
@@ -70,6 +79,14 @@ export class Dashboard extends React.Component {
                           <div className="card-action">
                             <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
+                          </div>
+						  <div className="card-action">
+                            <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                              Like
+                            </Button>
+                            <Button onClick={() => this.dislike(propos._id)}  block bsSize="large" type="submit">
+                              Dislike
+                            </Button>
                           </div>
                         </div>
                       </div>

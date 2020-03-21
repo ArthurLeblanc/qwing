@@ -92,8 +92,8 @@ export class Commentaire extends React.Component {
                   <p>Description : {propos.contenu}</p>
                 </div>
                 <div className="card-action">
-                  <a>retour aux propos</a>
-                  <a>Reponses</a>
+                  <a href = "/propos">retour aux propos</a>
+                  <a href = {"/" + propos._id + "/reponse"}>Reponses</a>
                 </div>
                 <div className="card-action">
                   <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
@@ -120,8 +120,14 @@ export class Commentaire extends React.Component {
                             <p>{commentaire.contenu}</p>
                           </div>
                           <div className="card-action">
-                            <a>Like</a>
-                            <a>Dislike</a>
+                          <div className="card-action">
+                            <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                              Like
+                            </Button>
+                            <Button onClick={() => this.dislike(propos._id)} block bsSize="large" type="submit">
+                              Dislike
+                            </Button>
+                          </div>
                           </div>
                         </div>
                       </div>

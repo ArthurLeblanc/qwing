@@ -1,16 +1,12 @@
 import React from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, MenuItem, SplitButton } from "react-bootstrap";
 import API from "../../utils/API";
 import 'materialize-css/dist/css/materialize.min.css'
 import M from 'materialize-css'; 
 import { Header } from "../Permanent/Header";
+import { CatPropos } from "../CatPropos/CatPropos";
 
 export class Propos extends React.Component {
-
-  componentDidMount() {
-    let elems = document.querySelectorAll('.dropdown-trigger');
-    M.Dropdown.init(elems, {inDuration: 300, outDuration: 225});
-  }
 
   constructor(props){
     super(props);
@@ -18,14 +14,26 @@ export class Propos extends React.Component {
       contenu: "",
       categorie:"",
       proposId : "",
-      allPropos : []
-	  }
+      allPropos : [],
+      allCatPropos : []
+  	}
 
+	this.getAllCatPropos = this.getAllCatPropos.bind(this);
 	this.getAllPropos = this.getAllPropos.bind(this);
   this.like = this.like.bind(this);
-	this.dislike = this.dislike.bind(this);
+  this.dislike = this.dislike.bind(this);
+  this.setCategorie = this.setCategorie.bind(this);
 
+  this.getAllCatPropos();
 	this.getAllPropos();
+  }
+
+  setCategorie = async(vcategorie) => {
+    this.setState({categorie : vcategorie});
+  }
+  getAllCatPropos = async() => {
+    const callCatPropos = await API.getAllCatPropos()
+    this.setState({allCatPropos : callCatPropos.data});
   }
 
   like = async(proposId) => {
@@ -60,24 +68,28 @@ export class Propos extends React.Component {
   };
   
   render() {
-    const { contenu, categorie, allPropos} = this.state;
+    const { contenu, categorie, allPropos, allCatPropos} = this.state;
     return (
       <div className = "Page">
        <Header />
         <div className="addPropos">
 
-            <div className="input-field col s12">
-              <a className='dropdown-button btn' data-activates='dropdown1'>Drop Me!</a>
-              <ul id='dropdown1' className='dropdown-content'>
-                <li><a href="#!">one</a></li>
-                <li><a href="#!">two</a></li>
-                <li className="divider"></li>
-                <li><a href="#!">three</a></li>
-                <li><a href="#!"><i className="material-icons">view_module</i>four</a></li>
-                <li><a href="#!"><i className="material-icons">cloud</i>five</a></li>
-              </ul>
-            </div>
-          
+          <SplitButton title="Categorie" id="split-button-pull-right">
+            {
+            allCatPropos.map
+                ( (catPropos, i) => 
+                  {
+                    return(
+                      <div className = "Catpropos" key = {i}>
+                        <Button onClick={() => this.setCategorie(catPropos.contenu)} block bsSize="large" type="submit">
+                          {catPropos.contenu}
+                        </Button>
+                      </div>
+                    )
+                  }
+                )
+            }
+          </SplitButton>
 
           <FormGroup controlId="categorie" bsSize="large">
             <ControlLabel>Categorie</ControlLabel>
