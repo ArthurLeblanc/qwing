@@ -19,6 +19,10 @@ export class Commentaire extends React.Component {
 
 	this.getAllCommentaire = this.getAllCommentaire.bind(this);
   this.getProposId = this.getProposId.bind(this);
+  this.like = this.like.bind(this)
+  this.dislike = this.dislike.bind(this)
+  this.likeCom = this.likeCom.bind(this)
+  this.dislikeCom = this.dislikeCom.bind(this)
 
 	this.getProposId();
 	this.getAllCommentaire();
@@ -38,12 +42,26 @@ export class Commentaire extends React.Component {
   	  
   }
 
+  likeCom = async(commentaireId) => {
+    await API.likeCom({"commentaireId" : commentaireId});
+	  this.getAllCommentaire();
+  }
+
+  dislikeCom = async(commentaireId) => {
+    await API.dislikeCom({"commentaireId" : commentaireId});
+	  this.getAllCommentaire();
+  }
+
   like = async(proposId) => {
-  	await API.like(proposId);
+    await API.like({"proposId" : proposId});
+    this.getProposId();
   }
+
   dislike = async(proposId) => {
-  	await API.dislike(proposId);
+    await API.dislike({"proposId" : proposId});
+    this.getProposId();
   }
+
 
   send = async () => {
     const { contenu, proposId} = this.state;
@@ -121,10 +139,10 @@ export class Commentaire extends React.Component {
                           </div>
                           <div className="card-action">
                           <div className="card-action">
-                            <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.likeCom(commentaire._id)} block bsSize="large" type="submit">
                               Like
                             </Button>
-                            <Button onClick={() => this.dislike(propos._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.dislikeCom(commentaire._id)} block bsSize="large" type="submit">
                               Dislike
                             </Button>
                           </div>

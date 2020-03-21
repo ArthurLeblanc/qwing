@@ -37,11 +37,13 @@ export class Propos extends React.Component {
   }
 
   like = async(proposId) => {
-  	await API.like(proposId);
+  	await API.like({"proposId" : proposId});
+    this.getAllPropos();
   }
 
   dislike = async(proposId) => {
-  	await API.dislike(proposId);
+  	await API.dislike({"proposId" : proposId});
+    this.getAllPropos();
   }
 
   getAllPropos = async() => {

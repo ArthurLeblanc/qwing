@@ -18,12 +18,16 @@ export class Dashboard extends React.Component {
 	this.getTop5();
   }
 
-  	like = async(proposId) => {
-		await API.like(proposId);
+  like = async(proposId) => {
+	await API.like({"proposId" : proposId});
+	this.getTop5()
 	}
+
 	dislike = async(proposId) => {
-		await API.dislike(proposId);
+		await API.dislike({"proposId" : proposId});
+		this.getTop5()
 	}
+
 
   getTop5 = async() => {
 	const cTop5 = await API.getAllPropos();
@@ -56,7 +60,7 @@ export class Dashboard extends React.Component {
 		  </Button>
 
 		  <h3>Les plus populaires</h3>
-			<div class="divider"></div>
+			<div className="divider"></div>
 			<div className="container" >
 		  {
             top5.map
@@ -73,7 +77,7 @@ export class Dashboard extends React.Component {
 							  <span className="card-title"> {propos.contenu} </span>
 							  <div className="row" style={{marginBottom: -20}}>
 							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i class="material-icons left">thumb_up</i> {propos.likes}</span>
+							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
 							</div>
                           </div>
                           <div className="card-action">
@@ -95,7 +99,7 @@ export class Dashboard extends React.Component {
                 }
               )
           }
-					</div>
+		</div>
 		</div>
 
     );

@@ -15,9 +15,9 @@ export class Header extends React.Component {
         let loginComponent;
         if (API.isAuth() === false) {
             loginComponent = (
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="/login" class="waves-effect waves-light btn green "><i class="material-icons left">person</i>Se connecter</a></li>
-                    <li><a href="/signup" class="waves-effect waves-light btn green"><i class="material-icons left">person</i>S'inscrire</a></li>
+                <ul className="right hide-on-med-and-down">
+                    <li><a href="/login" className="waves-effect waves-light btn green "><i className="material-icons left">person</i>Se connecter</a></li>
+                    <li><a href="/signup" className="waves-effect waves-light btn green"><i className="material-icons left">person</i>S'inscrire</a></li>
                 </ul>
             )
         } else {
@@ -31,22 +31,21 @@ export class Header extends React.Component {
         }
         return (
         <div className = "menu">
-        <ul id="dropdown1" class="dropdown-content">
+        <ul id="dropdown1" className="dropdown-content">
             <li><a href="#!">one</a></li>
             <li><a href="#!">two</a></li>
-            <li class="divider"></li>
+            <li className="divider"></li>
             <li><a href="#!">three</a></li>
         </ul>
-            <nav  class="blue darken-2">
-                <div class="nav-wrapper">
-                <a href="/dashboard" class="brand-logo center">Qwing</a>
-                <ul class="left hide-on-med-and-down">
-                    <li><a className="active" href= "/dashboard"><i class="material-icons left">home</i>Home</a></li>
+            <nav  className="blue darken-2">
+                <div className="nav-wrapper">
+                <a href="/dashboard" className="brand-logo center">Qwing</a>
+                <ul className="left hide-on-med-and-down">
+                    <li><a className="active" href= "/dashboard"><i className="material-icons left">home</i>Home</a></li>
                     <li><a href="/propos">Propos</a></li>
-                    <li><a href="#reponses">Reponses</a></li>
                     <li><a href="#about">About</a></li>
                 </ul>
-                <div class="right">
+                <div className="right">
                     { loginComponent }
                 </div>
                 </div>

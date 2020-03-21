@@ -24,6 +24,8 @@ export class Reponse extends React.Component {
   this.getProposId = this.getProposId.bind(this);
   this.like = this.like.bind(this)
   this.dislike = this.dislike.bind(this)
+  this.likeRep = this.likeRep.bind(this)
+  this.dislikeRep = this.dislikeRep.bind(this)
   this.setCategorie = this.setCategorie.bind(this);
 
   this.getAllCatReponse();
@@ -41,10 +43,23 @@ export class Reponse extends React.Component {
   }
 
   like = async(proposId) => {
-  	await API.like(proposId);
+    await API.like({"proposId" : proposId});
+    this.getProposId();
   }
+
   dislike = async(proposId) => {
-  	await API.dislike(proposId);
+    await API.dislike({"proposId" : proposId});
+    this.getProposId();
+  }
+
+  likeRep = async(reponseId) => {
+    await API.likeRep({"reponseId" : reponseId});
+	  this.getAllReponse();
+  }
+
+  dislikeRep = async(reponseId) => {
+    await API.dislikeRep({"reponseId" : reponseId});
+	  this.getAllReponse();
   }
 
   getProposId = async() => {
@@ -135,7 +150,7 @@ export class Reponse extends React.Component {
                 </div>
                 <div className="card-action">
                   <a href = "/propos">retour aux propos</a>
-                  <a href = {"/" + propos._id + "/commentaire"}>Reponses</a>
+                  <a href = {"/" + propos._id + "/commentaire"}>Commentaires</a>
                 </div>
                 <div className="card-action">
                   <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
@@ -162,10 +177,10 @@ export class Reponse extends React.Component {
                             <p>{reponse.contenu}</p>
                           </div>
                           <div className="card-action">
-                            <Button onClick={() => this.like(reponse._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.likeRep(reponse._id)} block bsSize="large" type="submit">
                               Like
                             </Button>
-                            <Button onClick={() => this.dislike(reponse._id)} block bsSize="large" type="submit">
+                            <Button onClick={() => this.dislikeRep(reponse._id)} block bsSize="large" type="submit">
                               Dislike
                             </Button>
                           </div>
