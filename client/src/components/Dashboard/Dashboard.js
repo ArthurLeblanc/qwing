@@ -13,20 +13,33 @@ export class Dashboard extends React.Component {
 	
 	this.getTop5 = this.getTop5.bind(this);
 	this.like = this.like.bind(this)
-	this.dislike = this.dislike.bind(this)
 	  
 	this.getTop5();
   }
 
   like = async(proposId) => {
-	await API.like({"proposId" : proposId});
-	this.getTop5()
-	}
-
-	dislike = async(proposId) => {
-		await API.dislike({"proposId" : proposId});
-		this.getTop5()
-	}
+	  //verifie si le user a déja like le propos, si oui unlike, sinon like
+	  const info = await API.getInfos()
+      if ( typeof info.data !== 'undefined'){
+		var proposLikes = info.data.likesPropos
+        var isLiked = false
+		proposLikes.map ( propos =>
+			{
+				if (propos._id == proposId){
+					isLiked = true
+				}
+			}
+			
+		)
+        if (!isLiked) {
+          await API.like({"proposId" : proposId});
+        }
+        else {
+			await API.dislike({"proposId" : proposId});
+        }
+	  }
+	  this.getTop5()
+  }
 
 
   getTop5 = async() => {
@@ -39,10 +52,10 @@ export class Dashboard extends React.Component {
     window.location = "/";
   };
 
-
-  render() {
+  render () {
 	const { top5} = this.state;
-	console.log(top5)
+	const blogged = API.isAuth();
+	console.log(blogged)
     return (
 
 		<div className="Dashboard">
@@ -85,12 +98,15 @@ export class Dashboard extends React.Component {
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
 						  <div className="card-action">
-                            <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-                              Like
-                            </Button>
-                            <Button onClick={() => this.dislike(propos._id)}  block bsSize="large" type="submit">
-                              Dislike
-                            </Button>
+							{
+								blogged ? (
+									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+										Like
+									</Button>
+								) : (
+									<p> Vous devez vous connecter pour liker un propos ! </p>
+								)
+							}
                           </div>
                         </div>
                       </div>

@@ -23,7 +23,6 @@ export class Reponse extends React.Component {
   this.getAllCatReponse = this.getAllCatReponse.bind(this);
   this.getProposId = this.getProposId.bind(this);
   this.like = this.like.bind(this)
-  this.dislike = this.dislike.bind(this)
   this.likeRep = this.likeRep.bind(this)
   this.dislikeRep = this.dislikeRep.bind(this)
   this.setCategorie = this.setCategorie.bind(this);
@@ -43,13 +42,27 @@ export class Reponse extends React.Component {
   }
 
   like = async(proposId) => {
-    await API.like({"proposId" : proposId});
-    this.getProposId();
-  }
-
-  dislike = async(proposId) => {
-    await API.dislike({"proposId" : proposId});
-    this.getProposId();
+	  //verifie si le user a déja like le propos, si oui unlike, sinon like
+	  const info = await API.getInfos()
+      if ( typeof info.data !== 'undefined'){
+      var proposLikes = info.data.likesPropos
+          var isLiked = false
+      proposLikes.map ( propos =>
+        {
+          if (propos._id == proposId){
+            isLiked = true
+          }
+        }
+        
+      )
+      if (!isLiked) {
+        await API.like({"proposId" : proposId});
+      }
+      else {
+        await API.dislike({"proposId" : proposId});
+      }
+	  }
+	  this.getProposId()
   }
 
   likeRep = async(reponseId) => {
@@ -95,6 +108,7 @@ export class Reponse extends React.Component {
   };
   
   render() {
+    const blogged = API.isAuth();
     const { contenu, categorie, propos, allReponses, allCatReponse} = this.state;
     return (
       <div className = "Reponse">
@@ -153,12 +167,15 @@ export class Reponse extends React.Component {
                   <a href = {"/" + propos._id + "/commentaire"}>Commentaires</a>
                 </div>
                 <div className="card-action">
-                  <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-                    Like
-                  </Button>
-                  <Button onClick={() => this.dislike(propos._id)} block bsSize="large" type="submit">
-                    Dislike
-                  </Button>
+                  {
+                    blogged? (
+                      <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                        Like
+                      </Button>
+                    ) : (
+                      <p> Vous devez vous connecter pour liker un propos ! </p>
+                    )
+                  }
                 </div>
               </div>
             </div>
@@ -177,12 +194,21 @@ export class Reponse extends React.Component {
                             <p>{reponse.contenu}</p>
                           </div>
                           <div className="card-action">
-                            <Button onClick={() => this.likeRep(reponse._id)} block bsSize="large" type="submit">
-                              Like
-                            </Button>
-                            <Button onClick={() => this.dislikeRep(reponse._id)} block bsSize="large" type="submit">
-                              Dislike
-                            </Button>
+                            {
+                              blogged? (
+                                <div>
+                                  <Button onClick={() => this.likeRep(reponse._id)} block bsSize="large" type="submit">
+                                    Like
+                                  </Button>
+                                  <Button onClick={() => this.dislikeRep(reponse._id)} block bsSize="large" type="submit">
+                                    Dislike
+                                  </Button>
+                                  </div>
+                                  ) : (
+                                    <p> Vous devez vous connecter pour liker une reponse ! </p>
+                                  )
+                            }
+                            
                           </div>
                         </div>
                       </div>

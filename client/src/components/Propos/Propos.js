@@ -21,7 +21,6 @@ export class Propos extends React.Component {
 	this.getAllCatPropos = this.getAllCatPropos.bind(this);
 	this.getAllPropos = this.getAllPropos.bind(this);
   this.like = this.like.bind(this);
-  this.dislike = this.dislike.bind(this);
   this.setCategorie = this.setCategorie.bind(this);
 
   this.getAllCatPropos();
@@ -37,13 +36,27 @@ export class Propos extends React.Component {
   }
 
   like = async(proposId) => {
-  	await API.like({"proposId" : proposId});
-    this.getAllPropos();
-  }
-
-  dislike = async(proposId) => {
-  	await API.dislike({"proposId" : proposId});
-    this.getAllPropos();
+	  //verifie si le user a déja like le propos, si oui unlike, sinon like
+	  const info = await API.getInfos()
+      if ( typeof info.data !== 'undefined'){
+      var proposLikes = info.data.likesPropos
+          var isLiked = false
+      proposLikes.map ( propos =>
+        {
+          if (propos._id == proposId){
+            isLiked = true
+          }
+        }
+        
+      )
+      if (!isLiked) {
+        await API.like({"proposId" : proposId});
+      }
+      else {
+        await API.dislike({"proposId" : proposId});
+      }
+	  }
+	  this.getAllPropos()
   }
 
   getAllPropos = async() => {
@@ -70,6 +83,7 @@ export class Propos extends React.Component {
   };
   
   render() {
+    const blogged = API.isAuth();
     const { contenu, categorie, allPropos, allCatPropos} = this.state;
     return (
       <div className = "Page">
@@ -133,12 +147,15 @@ export class Propos extends React.Component {
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
                           <div className="card-action">
-                            <Button onClick={() => this.like(propos._id)} key = {i1} block bsSize="large" type="submit">
-                              Like
-                            </Button>
-                            <Button onClick={() => this.dislike(propos._id)} key = {i2}  block bsSize="large" type="submit">
-                              Dislike
-                            </Button>
+                            {
+                              blogged? (
+                                <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                                  Like
+                                </Button>
+                              ) : (
+                                <p> Vous devez vous connecter pour liker un propos ! </p>
+                              )
+                            }
                           </div>
                         </div>
                       </div>
