@@ -9,6 +9,7 @@ import { CatPropos } from "./components/CatPropos/CatPropos.js";
 import { Commentaire } from "./components/Commentaire/Commentaire.js";
 import { Reponse } from "./components/Reponse/Reponse.js";
 import { ListeAimee } from "./components/ListeAimee/ListeAimee.js";
+import { MonCompte } from "./components/MonCompte/MonCompte.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
 import "./App.css";
 import "./css/Style1.css"
@@ -54,6 +55,7 @@ class App extends Component {
               <Route exact path="/listeAimee" component = {ListeAimee} />
               <Route exact path="/:proposId/commentaire" component = {Commentaire} />
               <Route exact path="/:proposId/reponse" component = {Reponse} />
+              <Route exact path="/account" component = {MonCompte} />
             </Switch>
 		  </BrowserRouter>
         </div>
