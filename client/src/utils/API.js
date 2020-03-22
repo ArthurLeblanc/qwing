@@ -36,6 +36,14 @@ export default {
     localStorage.clear();
   },
 
+  getInfos: function() {
+    return axios.get(`${burl}/users/`, { headers: headers });
+  },
+
+  updateAccount: function(send) {
+    return axios.put(`${burl}/users/edit-infos`, send, { headers: headers });
+  },
+
   /*----------------- PROPOS --------------*/
   addPropos: function(send){
     if (this.isAuth) {
