@@ -102,7 +102,7 @@ export default {
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.delete(`${burl}/commentaires/unlike-commentaire`,  send, { headers: headers });
+    return axios.delete(`${burl}/commentaires/unlike-commentaire`,  send, { headers: headers});
   },
 
   undislikeCom: function(send){

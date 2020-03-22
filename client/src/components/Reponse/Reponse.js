@@ -66,12 +66,48 @@ export class Reponse extends React.Component {
   }
 
   likeRep = async(reponseId) => {
-    await API.likeRep({"reponseId" : reponseId});
+    //verifie si le user a déja like la reponse, si oui unlike, sinon like
+    const info = await API.getInfos()
+    if ( typeof info.data !== 'undefined'){
+      var repLikes = info.data.likesReponses
+          var isLiked = false
+          repLikes.map ( reponse =>
+        {
+          if (reponse._id == reponseId){
+            isLiked = true
+          }
+        }
+      )
+      if (!isLiked) {
+        await API.likeRep({"reponseId" : reponseId});
+      }
+      else {
+        await API.unlikeRep(reponseId);
+      }
+    }
 	  this.getAllReponse();
   }
 
   dislikeRep = async(reponseId) => {
-    await API.dislikeRep({"reponseId" : reponseId});
+    //verifie si le user a déja dislike la reponse, si oui unlike, sinon like
+    const info = await API.getInfos()
+    if ( typeof info.data !== 'undefined'){
+      var repLikes = info.data.dislikesReponses
+          var isLiked = false
+          repLikes.map ( reponse =>
+        {
+          if (reponse._id == reponseId){
+            isLiked = true
+          }
+        }
+      )
+      if (!isLiked) {
+        await API.dislikeRep({"reponseId" : reponseId});
+      }
+      else {
+        await API.unlikeRep({"reponseId" : reponseId});
+      }
+    }
 	  this.getAllReponse();
   }
 

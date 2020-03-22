@@ -55,12 +55,10 @@ export class Commentaire extends React.Component {
         }
       )
       if (!isLiked) {
-        console.log("ici")
         await API.likeCom({"commentaireId" : commentaireId});
       }
       else {
-        console.log("la")
-        await API.unlikeCom({"commentaireId" : commentaireId});
+        await API.unlikeCom(commentaireId);
       }
     }
 
@@ -68,8 +66,27 @@ export class Commentaire extends React.Component {
   }
 
   dislikeCom = async(commentaireId) => {
-    await API.dislikeCom({"commentaireId" : commentaireId});
-	  this.getAllCommentaire();
+    //verifie si le user a déja dislike le commentaire, si oui unlike, sinon like
+    const info = await API.getInfos()
+    if ( typeof info.data !== 'undefined'){
+      var comLikes = info.data.dislikesCommentaires
+          var isDisliked = false
+      comLikes.map ( commentaire =>
+        {
+          if (commentaire._id == commentaireId){
+            isDisliked = true
+          }
+        }
+      )
+      if (!isDisliked) {
+        await API.dislikeCom({"commentaireId" : commentaireId});
+      }
+      else {
+        await API.undislikeCom(commentaireId);
+      }
+    }
+
+    this.getAllCommentaire();
   }
 
   like = async(proposId) => {
