@@ -157,6 +157,10 @@ async (req, res) => {
         const match = await bcrypt.compare(password, user.password)
         if (!match)
             return res.status(400).json({msg:'Email ou mot de passe incorrect'})
+        var isAdmin = false
+        if (user.isAdmin) 
+            isAdmin = user.isAdmin
+        
         // Création du payload avec l'id de l'utilisateur logged in pour le token
         const payload = {
             user: {
@@ -168,7 +172,7 @@ async (req, res) => {
             expiresIn:3600
         }, (err, token) => {
             if (err) throw error
-            res.send({ token })
+            res.send({ token, isAdmin })
         })
     } catch (error) {
         console.error(error.message)

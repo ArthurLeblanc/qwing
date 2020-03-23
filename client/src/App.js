@@ -5,6 +5,7 @@ import { Dashboard } from "./components/Dashboard/Dashboard.js";
 import { Login } from "./components/Login/Login.js";
 import { Signup } from "./components/Signup/Signup.js";
 import { Propos } from "./components/Propos/Propos.js";
+import { ProposRecents } from "./components/ProposRecents/ProposRecents.js";
 import { CatPropos } from "./components/CatPropos/CatPropos.js";
 import { Commentaire } from "./components/Commentaire/Commentaire.js";
 import { Reponse } from "./components/Reponse/Reponse.js";
@@ -13,6 +14,10 @@ import { MonCompte } from "./components/MonCompte/MonCompte.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
 import "./App.css";
 import "./css/Style1.css"
+import { AdminRoute } from "./components/AdminRoute.js";
+import { ProposAdmin } from "./components/Admin/ProposAdmin";
+import { ReponsesAdmin } from "./components/Admin/ReponsesAdmin";
+import { CommentairesAdmin } from "./components/Admin/CommentairesAdmin";
 
 /* Fonctionnel */
 /*
@@ -50,7 +55,11 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
+              <AdminRoute path="/admin/propos" component={ProposAdmin} />
+              <AdminRoute path="/admin/reponses" component={ReponsesAdmin} />
+              <AdminRoute path="/admin/commentaires" component={CommentairesAdmin} />
               <Route exact path="/propos" component = {Propos} />
+              <Route exact path="/propos-recents" component = {ProposRecents} />
               <Route exact path="/catPropos" component = {CatPropos} />
               <Route exact path="/listeAimee" component = {ListeAimee} />
               <Route exact path="/:proposId/commentaire" component = {Commentaire} />

@@ -9,10 +9,11 @@ export class Header extends React.Component {
         API.logout();
         window.location = "/";
       };
-
-
+      
     render() {
         let loginComponent;
+        let adminComponent;
+        const isAdmin = this.state;
         if (API.isAuth() === false) {
             loginComponent = (
                 <ul className="right hide-on-med-and-down">
@@ -21,28 +22,33 @@ export class Header extends React.Component {
                 </ul>
             )
         } else {
+            if (API.isAdmin()) {
+                adminComponent = (
+                    <SplitButton title="Espace Administration" id="split-button-pull-right">
+                        <MenuItem href="/admin/propos">Gérer les propos</MenuItem>
+                        <MenuItem href="/admin/reponses">Gérer les réponses</MenuItem>
+                        <MenuItem href="/admin/commentaires">Gérer les commentaires</MenuItem>
+                    </SplitButton>
+                )
+            }
             loginComponent = (
                 <SplitButton title="Mon compte" id="split-button-pull-right">
                     <MenuItem href="/listeAimee">Mes propos aimés</MenuItem>
-                    <MenuItem href="/user">Mes infos personnelles</MenuItem>
+                    <MenuItem href="/account">Mes infos personnelles</MenuItem>
                     <MenuItem onClick={this.disconnect}>Se déconnecter</MenuItem>
                 </SplitButton>
             )
         }
         return (
         <div className = "menu">
-        <ul id="dropdown1" className="dropdown-content">
-            <li><a href="#!">one</a></li>
-            <li><a href="#!">two</a></li>
-            <li className="divider"></li>
-            <li><a href="#!">three</a></li>
-        </ul>
             <nav  className="blue darken-2">
                 <div className="nav-wrapper">
                 <a href="/dashboard" className="brand-logo center">Qwing</a>
                 <ul className="left hide-on-med-and-down">
                     <li><a className="active" href= "/dashboard"><i className="material-icons left">home</i>Home</a></li>
-                    <li><a href="/propos">Propos</a></li>
+                    <li><a href="/propos">Propos Populaires</a></li>
+                    <li><a href="/propos-recents">Propos Récents</a></li>
+                    <li> { adminComponent }</li>
                     <li><a href="#about">About</a></li>
                 </ul>
                 <div className="right">

@@ -8,6 +8,19 @@ let User = require('../models/User');
 // Permet de vérifier si un utilisateur est connecté et si son token est valide
 const login = require('../middleware/login')
 
+
+  // Retourne tous les commentaires
+  router.get('/', (req, res) => {
+    commentaireSchema.find((error, data) => {
+        if (error)
+            return next(error)
+        else
+            res.json(data)
+    }).populate('creator', '_id email pseudo')
+      .populate('propos')
+      .sort({created_at: -1})
+  })
+
 // Modification d'un commentaire
 router.put('/edit-commentaire', login, async (req, res, next) => {
     const com = req.body.commentaireId
@@ -43,8 +56,13 @@ router.put('/edit-commentaire', login, async (req, res, next) => {
       const commentaire = await commentaireSchema.findById(com).populate('creator')
       if (!commentaire)
         return res.status(400).json({msg:'Ce commentaire n\'existe pas '})
-      if (commentaire.creator.email != user.email)
-        return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce commentaire'})
+      if (!commentaire.creator) {
+          if (user.isAdmin == false) {
+            return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce commentaire'})
+          }
+        } else if (commentaire.creator.email != user.email && user.isAdmin == false) {
+          return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce commentaire'})
+        } 
       commentaireSchema.findByIdAndRemove(commentaire._id, (error, data) => {
         if (error)
             return next(error)

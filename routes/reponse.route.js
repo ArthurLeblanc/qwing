@@ -10,6 +10,19 @@ let User = require('../models/User');
 // Permet de vérifier si un utilisateur est connecté et si son token est valide
 const login = require('../middleware/login')
 
+  // Retourne toutes les propos
+  router.get('/', (req, res) => {
+    reponseSchema.find((error, data) => {
+        if (error)
+            return next(error)
+        else
+            res.json(data)
+    }).populate('categorie')
+      .populate('creator', '_id email pseudo')
+      .populate('propos')
+      .sort({created_at: -1})
+  })
+
   // Suppression d'une réponse
   router.delete('/delete-reponse', login, async (req, res, next) => {
     const rep = req.body.reponseId
@@ -20,9 +33,14 @@ const login = require('../middleware/login')
       const reponse = await reponseSchema.findById(rep).populate('creator')
       if (!reponse)
         return res.status(400).json({msg:'Cette réponse n\'existe pas '})
-      if (reponse.creator.email != user.email)
-        return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer cette réponse'})
-        reponseSchema.findByIdAndRemove(reponse._id, (error, data) => {
+      if (!reponse.creator) {
+          if (user.isAdmin == false) {
+            return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer cette réponse'})
+          }
+        } else if (reponse.creator.email != user.email && user.isAdmin == false) {
+          return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce propos'})
+        }    
+      reponseSchema.findByIdAndRemove(reponse._id, (error, data) => {
         if (error)
             return next(error)
         const response = {

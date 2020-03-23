@@ -22,7 +22,10 @@ export class Login extends React.Component {
     try {
       const { data } = await API.login(email, password);
       localStorage.setItem("token", data.token);
-      window.location = "/dashboard";
+      localStorage.setItem("isAdmin", data.isAdmin);
+      console.log(data)
+      window.location = "/dashboard"
+
     } catch (error) {
       console.error(error);
     }
