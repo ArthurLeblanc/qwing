@@ -72,7 +72,7 @@ export class Dashboard extends React.Component {
 			ajouter une categorie (admin)
 		  </Button>
 
-		  <h3>Les plus populaires</h3>
+		  <h3>Top 5 les plus populaires</h3>
 			<div className="divider"></div>
 			<div className="container" >
 		  {

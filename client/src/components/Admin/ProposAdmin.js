@@ -10,14 +10,17 @@ export class ProposAdmin extends React.Component {
         super(props);
         this.state = {
           allPropos : [],
-          //data: {columns:[], rows:[]}
+          data:{columns:[], rows:[]}
           }
         this.getAllPropos();
     }
+    //ICI IL FAUT QUE TU BIIIIIIIIIIIIIIINDDDD
 
     getAllPropos = async() => {
         const callPropos = await API.getAllPropos();
-        this.setState({allPropos : callPropos.data})
+        this.setState({allPropos : callPropos.data});
+        const v = this.fillProposDatatable()
+        this.setState({data : v})
     }
 
     deletePropos = (proposId) => {
@@ -25,12 +28,13 @@ export class ProposAdmin extends React.Component {
         alert("Propos supprimé !")
     }
 
-    fillProposDatatable = (allPropos) => {
-        var data = {columns:[], rows: []}
+    fillProposDatatable = () => {
+      const { allPropos} = this.state
+        var cdata = {columns:[], rows: []}
         allPropos.map
         ( (propos) => 
           {
-             data.rows.push({
+             cdata.rows.push({
                 'id': propos._id,
                 'contenu': propos.contenu,
                 'catégorie': propos.categorie.contenu,
@@ -39,12 +43,11 @@ export class ProposAdmin extends React.Component {
                 'action': <MDBBtn onClick={() => { this.deletePropos(propos._id) }} color="default" rounded size="sm">Supprimer</MDBBtn>
             })
         })
-        return data
+        return cdata
     }
 
     render() {
-        const { allPropos } = this.state;
-        var data = this.fillProposDatatable(allPropos)
+        const {  data } = this.state;
         const columns= [
             {
               label: '#',
