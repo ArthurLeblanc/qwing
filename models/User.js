@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    },
     likesPropos: [
         {
           type: Schema.Types.ObjectId,

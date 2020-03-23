@@ -32,6 +32,17 @@ export default {
     return localStorage.getItem("token") !== null;
   },
 
+  isAdmin: function() {
+    return localStorage.getItem("isAdmin") === "true";
+  },
+
+  getUserInfo: function() {
+    if (this.isAuth() !== false) {
+      headers["auth-token"] = token
+    }
+    return axios.get(`${burl}/users`, { headers: headers });
+  },
+
   logout: function() {
     localStorage.clear();
   },
@@ -43,6 +54,7 @@ export default {
   updateAccount: function(send) {
     return axios.put(`${burl}/users/edit-infos`, send, { headers: headers });
   },
+
 
   /*----------------- PROPOS --------------*/
   addPropos: function(send){
@@ -71,6 +83,13 @@ export default {
     return axios.put(`${burl}/propos/like-propos`,  send, { headers: headers });
   },
 
+  deletePropos: function(send) {
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.delete(`${burl}/propos/delete-propos`, {headers: headers, data: send});
+  },
+
   dislike: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
@@ -89,6 +108,17 @@ export default {
 
   getAllCommentaire: function(proposId){
     return axios.get(`${burl}/propos/${proposId}/commentaires`, { headers: headers });
+  },
+
+  getAllCommentaires: function(){
+    return axios.get(`${burl}/commentaires/`, { headers: headers });
+  },  
+
+  deleteCommentaire: function(send) {
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.delete(`${burl}/commentaires/delete-commentaire`, {headers: headers, data: send});
   },
 
   likeCom: function(send){
@@ -118,6 +148,10 @@ export default {
     return axios.get(`${burl}/propos/${proposId}/reponses`, { headers: headers });
   },
 
+  getAllReponses: function(){
+    return axios.get(`${burl}/reponses/`, { headers: headers });
+ },
+
   likeRep: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
@@ -130,6 +164,13 @@ export default {
       headers["auth-token"] = token
     }
     return axios.delete(`${burl}/reponses/unlike-reponse`, {headers: headers, data: send});
+  },
+
+  deleteReponse: function(send) {
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
+    return axios.delete(`${burl}/reponses/delete-reponse`, {headers: headers, data: send});
   },
 
   /*----------------- CATEGORIE PROPOS --------------*/

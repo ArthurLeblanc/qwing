@@ -136,11 +136,38 @@ router.delete('/delete-propos', login, async (req, res, next) => {
     return res.status(400).json({msg:'ID invalide'})
   try {
     const user = await (await User.findById(req.user.id).select("-password"))
-    const existingPropos = await ProposSchema.findById(propos).populate('creator')
+    const existingPropos = await ProposSchema.findById(propos).populate('creator').populate('reponses').populate('commentaires')
     if (!existingPropos)
       return res.status(400).json({msg:'Ce propos n\'existe pas '})
-    if (existingPropos.creator.email != user.email)
+    if (!existingPropos.creator) {
+      if (user.isAdmin == false) {
+        return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce propos'})
+      }
+    } else if (existingPropos.creator.email != user.email && user.isAdmin == false) {
       return res.status(403).json({msg:'Vous n\'êtes pas autorisé à supprimer ce propos'})
+    }
+    console.log(existingPropos.reponses)
+    //Supprime toutes les réponses associées au propos
+    existingPropos.reponses.map
+        ( (rep) => 
+          {
+            console.log(rep._id)
+            Reponse.findByIdAndRemove(rep._id, (error, data) => {
+              if (error)
+                  return next(error)
+            })
+          })
+    //Supprime tous les commentaires associés au propos
+    existingPropos.commentaires.map
+        ( (com) => 
+          {
+            console.log(com._id)
+            Commentaire.findByIdAndRemove(com._id, (error, data) => {
+              if (error)
+                  return next(error)
+            })
+          })
+    
     ProposSchema.findByIdAndRemove(existingPropos._id, (error, data) => {
       if (error)
           return next(error)

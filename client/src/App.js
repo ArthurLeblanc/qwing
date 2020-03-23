@@ -12,6 +12,10 @@ import { MonCompte } from "./components/MonCompte/MonCompte.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
 import "./App.css";
 import "./css/Style1.css"
+import { AdminRoute } from "./components/AdminRoute.js";
+import { ProposAdmin } from "./components/Admin/ProposAdmin";
+import { ReponsesAdmin } from "./components/Admin/ReponsesAdmin";
+import { CommentairesAdmin } from "./components/Admin/CommentairesAdmin";
 
 /* Fonctionnel */
 /*
@@ -49,6 +53,9 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
+              <AdminRoute path="/admin/propos" component={ProposAdmin} />
+              <AdminRoute path="/admin/reponses" component={ReponsesAdmin} />
+              <AdminRoute path="/admin/commentaires" component={CommentairesAdmin} />
               <Route exact path="/propos" component = {Propos} />
               <Route exact path="/catPropos" component = {CatPropos} />
               <Route exact path="/:proposId/commentaire" component = {Commentaire} />
