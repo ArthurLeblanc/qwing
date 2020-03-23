@@ -37,6 +37,9 @@ export default {
   },
   
   getInfos: function() {
+    if (this.isAuth) {
+      headers["auth-token"] = token
+    }
     return axios.get(`${burl}/users/`, { headers: headers });
   },
 
@@ -110,21 +113,36 @@ export default {
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.delete(`${burl}/commentaires/unlike-commentaire`,  send, { headers: headers});
+    return axios({
+      url : `${burl}/commentaires/unlike-commentaire`,
+      method : 'delete',
+      data : send,
+      headers : headers
+    });
   },
 
   undislikeCom: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.delete(`${burl}/commentaires/undislike-commentaire`,  send, { headers: headers });
+    return axios({
+      url : `${burl}/commentaires/undislike-commentaire`,
+      method : 'delete',
+      data : send,
+      headers : headers
+    });
   },
 
   dislikeCom: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.put(`${burl}/commentaires/dislike-commentaire`, {headers: headers, data: send});
+    return axios({
+      url : `${burl}/commentaires/dislike-commentaire`,
+      method : 'put',
+      data : send,
+      headers : headers
+    });
   },
 
   /*----------------- Reponse --------------*/
@@ -151,21 +169,36 @@ export default {
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.put(`${burl}/reponses/dislike-reponse`, {headers: headers, data: send});
+    return axios({
+      url : `${burl}/reponses/dislike-reponse`,
+      method : 'put',
+      data : send,
+      headers : headers
+    });
   },
 
   unlikeRep: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.delete(`${burl}/reponses/unlike-reponse`,  send, { headers: headers });
+    return axios({
+      url : `${burl}/reponses/unlike-reponse`,
+      method : 'delete',
+      data : send,
+      headers : headers
+    });
   },
 
   undislikeRep: function(send){
     if (this.isAuth) {
       headers["auth-token"] = token
     }
-    return axios.delete(`${burl}/reponses/undislike-reponse`, {headers: headers, data: send});
+    return axios({
+      url : `${burl}/reponses/undislike-reponse`,
+      method : 'delete',
+      data : send,
+      headers : headers
+    });
   },
 
   /*----------------- CATEGORIE PROPOS --------------*/

@@ -82,7 +82,7 @@ export class Reponse extends React.Component {
         await API.likeRep({"reponseId" : reponseId});
       }
       else {
-        await API.unlikeRep(reponseId);
+        await API.unlikeRep({"reponseId" : reponseId});
       }
     }
 	  this.getAllReponse();
@@ -105,7 +105,7 @@ export class Reponse extends React.Component {
         await API.dislikeRep({"reponseId" : reponseId});
       }
       else {
-        await API.unlikeRep({"reponseId" : reponseId});
+        await API.undislikeRep({"reponseId" : reponseId});
       }
     }
 	  this.getAllReponse();
@@ -226,7 +226,7 @@ export class Reponse extends React.Component {
                       <div className="col s12 m6">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
-                            <span className="card-title">  // like : {reponse.likes} </span>
+                            <span className="card-title">  // like : {reponse.likes} // dislike : {reponse.dislikes}</span>
                             <p>{reponse.contenu}</p>
                           </div>
                           <div className="card-action">

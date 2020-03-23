@@ -55,14 +55,17 @@ export class Commentaire extends React.Component {
         }
       )
       if (!isLiked) {
+        console.log("!")
         await API.likeCom({"commentaireId" : commentaireId});
       }
       else {
-        await API.unlikeCom(commentaireId);
+        console.log("o")
+        await API.unlikeCom({"commentaireId" :commentaireId});
       }
     }
 
-	  this.getAllCommentaire();
+    this.getAllCommentaire();
+    console.log("fin")
   }
 
   dislikeCom = async(commentaireId) => {
@@ -82,7 +85,7 @@ export class Commentaire extends React.Component {
         await API.dislikeCom({"commentaireId" : commentaireId});
       }
       else {
-        await API.undislikeCom(commentaireId);
+        await API.undislikeCom({"commentaireId" :commentaireId});
       }
     }
 
@@ -188,7 +191,7 @@ export class Commentaire extends React.Component {
                       <div className="col s12 m6">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
-                            <span className="card-title">  // like : {commentaire.likes} </span>
+                            <span className="card-title">  // like : {commentaire.likes} // dislike : {commentaire.dislikes} </span>
                             <p>{commentaire.contenu}</p>
                           </div>
                           <div className="card-action">
