@@ -3,49 +3,27 @@ import { Button } from "react-bootstrap";
 import { Header } from "../Permanent/Header";
 import API from "../../utils/API";
 
-export class Dashboard extends React.Component {
+export class ListeAimee extends React.Component {
 
   constructor(props){
 	super(props);
 	this.state = {
-		top5 : []
+		proposAimes : []
 	}
 	
-	this.getTop5 = this.getTop5.bind(this);
-	this.like = this.like.bind(this)
-	  
-	this.getTop5();
+    this.setListe = this.setListe.bind(this);
+    this.setListe();
+    
   }
 
-  like = async(proposId) => {
+  setListe = async() => {
 	  //verifie si le user a déja like le propos, si oui unlike, sinon like
 	  const info = await API.getInfos()
-      if ( typeof info.data !== 'undefined'){
+      if ( typeof info.data !== 'undefined')
 		var proposLikes = info.data.likesPropos
-        var isLiked = false
-		proposLikes.map ( propos =>
-			{
-				if (propos._id == proposId){
-					isLiked = true
-				}
-			}
-			
-		)
-        if (!isLiked) {
-          await API.like({"proposId" : proposId});
-        }
-        else {
-			await API.dislike({"proposId" : proposId});
-        }
-	  }
-	  this.getTop5()
+      this.setState({proposAimes : proposLikes})
   }
 
-
-  getTop5 = async() => {
-	const cTop5 = await API.getAllPropos();
-	this.setState({top5 : cTop5.data})
-  }
 
   disconnect = () => {
     API.logout();
@@ -53,30 +31,13 @@ export class Dashboard extends React.Component {
   };
 
   render () {
-	const { top5} = this.state;
-	const blogged = API.isAuth();
-	console.log(blogged)
+    const { proposAimes} = this.state;
     return (
-
-		<div className="Dashboard">
+		<div className="Liste">
 		<Header />
-		  <h2>Accueil</h2>
-		  <p>
-		    Vous avez été victime d'un propos sexiste et vous n'avez pas su répondre ?
-				Partagez votre expérience
-		  </p>
-		  <Button onClick={ () => window.location = "/propos"} bsSize="large" type="submit">
-			Voir les propos
-		  </Button>
-		  <Button onClick={ () => window.location = "/catPropos"} bsSize="large" type="submit">
-			ajouter une categorie (admin)
-		  </Button>
-
-		  <h3>Les plus populaires</h3>
-			<div className="divider"></div>
-			<div className="container" >
+		  <h2>Liste des propos aimés</h2>
 		  {
-            top5.map
+            proposAimes.map
               ( (propos, i) => 
                 {
                   return(
@@ -97,17 +58,6 @@ export class Dashboard extends React.Component {
                             <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
-						  <div className="card-action">
-							{
-								blogged ? (
-									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-										Like
-									</Button>
-								) : (
-									<p> Vous devez vous connecter pour liker un propos ! </p>
-								)
-							}
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -115,7 +65,6 @@ export class Dashboard extends React.Component {
                 }
               )
           }
-		</div>
 		</div>
 
     );

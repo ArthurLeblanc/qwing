@@ -119,6 +119,7 @@ router.put('/like-commentaire', login, async (req, res, next) => {
 
 // Supprime un commentaire de la liste des commentaires aimés d'un utilisateur
 router.delete('/unlike-commentaire', login, async (req, res, next) => {
+  console.log("serverhidsojfop")
   const commentaire = req.body.commentaireId
   if (commentaire.length != 24)
       return res.status(400).json({msg:'ID invalide'})
