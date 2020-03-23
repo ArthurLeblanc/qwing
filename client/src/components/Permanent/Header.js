@@ -34,7 +34,7 @@ export class Header extends React.Component {
             loginComponent = (
                 <SplitButton title="Mon compte" id="split-button-pull-right">
                     <MenuItem href="/listeAimee">Mes propos aimés</MenuItem>
-                    <MenuItem href="/user">Mes infos personnelles</MenuItem>
+                    <MenuItem href="/account">Mes infos personnelles</MenuItem>
                     <MenuItem onClick={this.disconnect}>Se déconnecter</MenuItem>
                 </SplitButton>
             )
@@ -46,7 +46,8 @@ export class Header extends React.Component {
                 <a href="/dashboard" className="brand-logo center">Qwing</a>
                 <ul className="left hide-on-med-and-down">
                     <li><a className="active" href= "/dashboard"><i className="material-icons left">home</i>Home</a></li>
-                    <li><a href="/propos">Propos</a></li>
+                    <li><a href="/propos">Propos Populaires</a></li>
+                    <li><a href="/propos-recents">Propos Récents</a></li>
                     <li> { adminComponent }</li>
                     <li><a href="#about">About</a></li>
                 </ul>
