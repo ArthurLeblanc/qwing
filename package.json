@@ -29,7 +29,8 @@
     "mongoose": "^5.9.2",
     "mui-datatables": "^2.14.0",
     "react-bootstrap": "^0.32.4",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "yarn": "^1.22.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
