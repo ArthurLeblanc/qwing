@@ -90,72 +90,40 @@ export class Propos extends React.Component {
        <Header />
         <div className="addPropos">
 
-          <SplitButton title="Categorie" id="split-button-pull-right">
-            {
-            allCatPropos.map
-                ( (catPropos, i) => 
-                  {
-                    return(
-                      <div className = "Catpropos" key = {i}>
-                        <Button onClick={() => this.setCategorie(catPropos.contenu)} block bsSize="large" type="submit">
-                          {catPropos.contenu}
-                        </Button>
-                      </div>
-                    )
-                  }
-                )
-            }
-          </SplitButton>
+          <h3>Propos populaires</h3>
 
-          <FormGroup controlId="categorie" bsSize="large">
-            <ControlLabel>Categorie</ControlLabel>
-            <FormControl
-              autoFocus
-              type="categorie"
-              value={categorie}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="contenu" bsSize="large">
-            <ControlLabel>Contenu</ControlLabel>
-            <FormControl
-              autoFocus
-              type="contenu"
-              value={contenu}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-
-          <Button onClick={this.send} block bsSize="large" type="submit">
-            Ajouter le propos
-          </Button>
-          
           {
             allPropos.map
-              ( (propos, i, i1, i2) => 
+              ( (propos, i) => 
                 {
                   return(
-                    <div className="row" key = {i}>
-                      <div className="col s12 m6">
+                    <div className="row" key={i}>
+                      <div className="col s12 m6 offset-m3">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
-                            <span className="card-title"> Categorie : {propos.categorie.contenu} // like : {propos.likes} </span>
-                            <p>{propos.contenu}</p>
+							<div className="row">
+							  <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
+							</div>
+							  <span className="card-title"> {propos.contenu} </span>
+							  <div className="row" style={{marginBottom: -20}}>
+							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
+							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							</div>
                           </div>
                           <div className="card-action">
                             <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
-                          <div className="card-action">
-                            {
-                              blogged? (
-                                <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-                                  Like
-                                </Button>
-                              ) : (
-                                <p> Vous devez vous connecter pour liker un propos ! </p>
-                              )
-                            }
+						  <div className="card-action">
+							{
+								blogged ? (
+									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+										Like
+									</Button>
+								) : (
+									<p> Vous devez vous connecter pour liker un propos ! </p>
+								)
+							}
                           </div>
                         </div>
                       </div>
