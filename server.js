@@ -3,6 +3,7 @@ let mongoose = require('mongoose');
 let cors = require('cors');
 let bodyParser = require('body-parser');
 let dbConfig = require('./config/keys');
+const path = require('path');
 
 // Express Routes
 const userRoute = require('./routes/user.route')
