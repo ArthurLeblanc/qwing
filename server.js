@@ -40,6 +40,11 @@ app.use('/api/reponses/', reponseRoute)
 app.use('/api/categories/', categorieRoute)
 app.use('/api/commentaires/', commentaireRoute)
 
+// If no API routes are hit, send the React app
+app.use(function(req, res) {
+	res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
 
 // PORT
 const port = process.env.PORT || 4000;
