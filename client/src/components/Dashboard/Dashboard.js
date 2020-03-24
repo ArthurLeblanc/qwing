@@ -89,6 +89,7 @@ export class Dashboard extends React.Component {
       <div className = "Page">
        <Header />
         <div className="addPropos">
+        <h5>Vous avez été victime d'un propos sexiste  et n'avez pas su répondre? Faites nous en part !</h5>
 
           <SplitButton title={"Catégorie - " + categorie} id="split-button-pull-right">
             {
