@@ -55,6 +55,7 @@ export class Dashboard extends React.Component {
   render () {
 	const { top5} = this.state;
 	const blogged = API.isAuth();
+	const isadmin = API.isAdmin();
 	console.log(blogged)
     return (
 
@@ -68,9 +69,13 @@ export class Dashboard extends React.Component {
 		  <Button onClick={ () => window.location = "/propos"} bsSize="large" type="submit">
 			Voir les propos
 		  </Button>
-		  <Button onClick={ () => window.location = "/catPropos"} bsSize="large" type="submit">
-			ajouter une categorie (admin)
-		  </Button>
+		  {
+			  isadmin? (
+			  <Button onClick={ () => window.location = "/catPropos"} bsSize="large" type="submit">
+			  	ajouter une categorie (admin)
+			  </Button> ) : ( <div> </div>)
+		  }
+		  
 
 		  <h3>Top 5 les plus populaires</h3>
 			<div className="divider"></div>
@@ -87,7 +92,9 @@ export class Dashboard extends React.Component {
 							<div className="row">
 							  <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
 							</div>
-							  <span className="card-title"> {propos.contenu} </span>
+							  <span className="card-title"> Propos</span>
+							  <p>Categorie : {propos.categorie.contenu}</p>
+							  <p>Description : {propos.contenu}</p>
 							  <div className="row" style={{marginBottom: -20}}>
 							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
 							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>

@@ -197,9 +197,12 @@ export class Reponse extends React.Component {
             <div className="col s12 m6 offset-m3">
               <div className="card blue-grey darken-1">
                 <div className="card-content white-text">
-                  <span className="card-title">  PROPOS // like :{propos.likes} </span>
-                  Categorie : {propos.categorie}
+                  <span className="card-title">  Propos sélectionné </span>
                   <p>Description : {propos.contenu}</p>
+                  <div className="row" style={{marginBottom: -20}}>
+                    <span className= "bottom left">Créé le :  {propos.created_at}</span> 
+                    <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							    </div>
                 </div>
                 <div className="card-action">
                   <a href = "/propos">retour aux propos</a>
@@ -230,8 +233,12 @@ export class Reponse extends React.Component {
                       <div className="col s12 m6 offset-m3">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
-                            <span className="card-title">  // like : {reponse.likes} // dislike : {reponse.dislikes}</span>
-                            <p>{reponse.contenu}</p>
+                            <span className="card-title"> Réponse</span>
+                            <p> Description : {reponse.contenu}</p>
+                            <div className="row" style={{marginBottom: -20}}>
+                              <span className= "bottom right"><i className="material-icons left">thumb_up</i> {reponse.likes} <p></p>
+                              <i className="material-icons left">thumb_down</i> {reponse.dislikes}</span>
+                            </div>
                           </div>
                           <div className="card-action">
                             {
