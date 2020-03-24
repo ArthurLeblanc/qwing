@@ -149,6 +149,8 @@ export class Reponse extends React.Component {
     return (
       <div className = "Reponse">
       <Header />
+      <div className="container" >
+      <div className="row">
         <div className="addPropos">
         <h3>Ecrivez votre reponse</h3>
         <SplitButton title="Categorie" id="split-button-pull-right">
@@ -189,9 +191,10 @@ export class Reponse extends React.Component {
           <Button onClick={this.send} block bsSize="large" type="submit">
             Ajouter la reponse
           </Button>
-
+      </div>
+          <div className="divider" style={{marginTop: 30, marginBottom: 15}}></div>
           <div className="row">
-            <div className="col s12 m6">
+            <div className="col s12 m6 offset-m3">
               <div className="card blue-grey darken-1">
                 <div className="card-content white-text">
                   <span className="card-title">  PROPOS // like :{propos.likes} </span>
@@ -216,6 +219,7 @@ export class Reponse extends React.Component {
               </div>
             </div>
           </div>
+          </div>
           
           {
             allReponses.map
@@ -223,7 +227,7 @@ export class Reponse extends React.Component {
                 {
                   return(
                     <div className="row" key = {i}>
-                      <div className="col s12 m6">
+                      <div className="col s12 m6 offset-m3">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
                             <span className="card-title">  // like : {reponse.likes} // dislike : {reponse.dislikes}</span>

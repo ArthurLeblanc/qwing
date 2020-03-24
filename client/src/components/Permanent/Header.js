@@ -49,7 +49,6 @@ export class Header extends React.Component {
                     <li><a href="/propos">Propos Populaires</a></li>
                     <li><a href="/propos-recents">Propos Récents</a></li>
                     <li> { adminComponent }</li>
-                    <li><a href="#about">About</a></li>
                 </ul>
                 <div className="right">
                     { loginComponent }

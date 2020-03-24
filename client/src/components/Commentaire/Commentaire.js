@@ -139,6 +139,8 @@ export class Commentaire extends React.Component {
     return (
       <div className = "Page">
         <Header />
+        <div className="container" >
+      <div className="row">
         <div className="addPropos">
           <h3>Ecrivez votre commentaire</h3>
           <FormGroup controlId="contenu" bsSize="large">
@@ -154,9 +156,10 @@ export class Commentaire extends React.Component {
           <Button onClick={this.send} block bsSize="large" type="submit">
             Ajouter le commentaire
           </Button>
-
+          </div>
+          <div className="divider" style={{marginTop: 30, marginBottom: 15}}></div>
           <div className="row">
-            <div className="col s12 m6">
+            <div className="col s12 m6 offset-m3">
               <div className="card blue-grey darken-1">
                 <div className="card-content white-text">
                   <span className="card-title">  PROPOS // like :{propos.likes} </span>
@@ -188,7 +191,7 @@ export class Commentaire extends React.Component {
                 {
                   return(
                     <div className="row" key={i}>
-                      <div className="col s12 m6">
+                      <div className="col s12 m6 offset-m3">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
                             <span className="card-title">  // like : {commentaire.likes} // dislike : {commentaire.dislikes} </span>
@@ -221,6 +224,7 @@ export class Commentaire extends React.Component {
               )
           }
         </div>
+      </div>
       </div>
 	)
   }
