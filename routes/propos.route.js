@@ -50,7 +50,7 @@ router.get('/:proposId', (req, res, next) => {
           return next(error)
       else
           res.json(data)
-  }).where('_id').equals(proposId)
+  }).where('_id').equals(proposId).populate('categorie')
 })
 
 // Créée un propos
@@ -229,7 +229,7 @@ router.put('/add-reponse', async (req, res, next) => {
       if (error)
         return next(error)
       else
-        res.json(data)
+        res.json({id: rep._id})
     })
     } catch(err) {
       res.status(500).send("Erreur du serveur")
@@ -275,7 +275,7 @@ router.put('/add-commentaire', async (req, res, next) => {
       if (error)
         return next(error)
       else
-        res.json(data)
+        res.json({id: com._id})
     })
   } catch(err) {
     res.status(500).send("Erreur du serveur")
