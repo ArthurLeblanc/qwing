@@ -136,6 +136,7 @@ export class Commentaire extends React.Component {
   render() {
     const blogged = API.isAuth();
     const { contenu, propos, allCommentaires} = this.state;
+    console.log(propos)
     return (
       <div className = "Page">
         <Header />
@@ -162,9 +163,12 @@ export class Commentaire extends React.Component {
             <div className="col s12 m6 offset-m3">
               <div className="card blue-grey darken-1">
                 <div className="card-content white-text">
-                  <span className="card-title">  PROPOS // like :{propos.likes} </span>
-                  Categorie : {propos.categorie}
+                  <span className="card-title">  Propos selectionné </span>
                   <p>Description : {propos.contenu}</p>
+                  <div className="row" style={{marginBottom: -20}}>
+                    <span className= "bottom left">Créé le :  {propos.created_at}</span> 
+                    <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							    </div>
                 </div>
                 <div className="card-action">
                   <a href = "/propos">retour aux propos</a>
@@ -194,10 +198,13 @@ export class Commentaire extends React.Component {
                       <div className="col s12 m6 offset-m3">
                         <div className="card blue-grey darken-1">
                           <div className="card-content white-text">
-                            <span className="card-title">  // like : {commentaire.likes} // dislike : {commentaire.dislikes} </span>
-                            <p>{commentaire.contenu}</p>
+                            <span className="card-title"> Commentaire </span>
+                            <p>Description : {commentaire.contenu}</p>
+                            <div className="row" style={{marginBottom: -20}}>
+                              <span className= "bottom right"><i className="material-icons left">thumb_up</i> {commentaire.likes} <p></p>
+                              <i className="material-icons left">thumb_down</i> {commentaire.dislikes}</span>
+                            </div>
                           </div>
-                          <div className="card-action">
                           <div className="card-action">
                             {
                               blogged? (
@@ -214,7 +221,6 @@ export class Commentaire extends React.Component {
                               )
                             }
                             
-                          </div>
                           </div>
                         </div>
                       </div>

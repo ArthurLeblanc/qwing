@@ -62,17 +62,7 @@ export class ProposRecents extends React.Component {
 
 		<div className="Dashboard">
 		<Header />
-		  <h2>Accueil</h2>
-		  <p>
-		    Vous avez été victime d'un propos sexiste et vous n'avez pas su répondre ?
-				Partagez votre expérience
-		  </p>
-		  <Button onClick={ () => window.location = "/propos"} bsSize="large" type="submit">
-			Voir les propos
-		  </Button>
-		  <Button onClick={ () => window.location = "/catPropos"} bsSize="large" type="submit">
-			ajouter une categorie (admin)
-		  </Button>
+
 
 		  <h3>Les plus récents</h3>
 			<div className="divider"></div>
