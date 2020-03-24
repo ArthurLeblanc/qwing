@@ -1,8 +1,9 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Header } from "../Permanent/Header"
 import API from "../../utils/API";
-import { Button } from "react-bootstrap";
-import { MDBBtn, MDBDataTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
+import MUIDataTable from "mui-datatables";
+import M from 'materialize-css';
 
 export class ReponsesAdmin extends React.Component {
 
@@ -10,43 +11,48 @@ export class ReponsesAdmin extends React.Component {
         super(props);
         this.state = {
           allReponses : [],
-          //data: {columns:[], rows:[]}
+          data: {columns:[], rows:[]}
           }
-        this.getAllReponses();
+        this.getAllReponses = this.getAllReponses.bind(this)
+        this.fillReponsesDatatable = this.fillReponsesDatatable.bind(this)
+        this.getAllReponses()
     }
 
     getAllReponses = async() => {
         const callReponses = await API.getAllReponses();
         this.setState({allReponses : callReponses.data})
+        const v = this.fillReponsesDatatable()
+        this.setState({data : v})
     }
 
-    deleteReponse = (reponseId) => {
+    deleteReponse = (index) => {
+        var array = this.state.data.rows
+        let reponseId = array[index][0]
         API.deleteReponse({"reponseId" : reponseId})
-        alert("Réponse supprimée !")
+        M.toast({html: "Propos supprimé !" ,classes: "green"})
     }
 
-    fillReponsesDatatable = (allReponses) => {
-        var data = {columns:[], rows: []}
+    fillReponsesDatatable = () => {
+      const {allReponses} = this.state
+        var cdata = {columns:[], rows: []}
         allReponses.map
         ( (reponse) => 
           {
-             data.rows.push({
-                'id': reponse._id,
-                'propos': reponse.propos ? reponse.propos.contenu : "null",
-                'reponse': reponse.contenu,
-                'catégorie': reponse.categorie.contenu,
-                'likes': reponse.likes,
-                'dislikes': reponse.dislikes,
-                'creator': reponse.creator ? reponse.creator.email : 'Anonyme',
-                'action': <MDBBtn onClick={() => { this.deleteReponse(reponse._id) }} color="default" rounded size="sm">Supprimer</MDBBtn>
-            })
+             cdata.rows.push([
+                reponse._id,
+                reponse.propos ? reponse.propos.contenu : "null",
+                reponse.contenu,
+                reponse.categorie.contenu,
+                reponse.likes,
+                reponse.dislikes,
+                reponse.creator ? reponse.creator.email : 'Anonyme',
+             ])
         })
-        return data
+        return cdata
     }
 
     render() {
-        const { allReponses } = this.state;
-        var data = this.fillReponsesDatatable(allReponses)
+        const { data } = this.state;
         const columns= [
             {
               label: '#',
@@ -89,14 +95,24 @@ export class ReponsesAdmin extends React.Component {
             }
           ];
           data.columns = columns
-
+          const options = {
+            filterType: "dropdown",
+            responsive: "scroll",
+            selectableRowsOnClick : "true",
+            onRowsDelete : (d) => d.data.map( (reponse) => { this.deleteReponse(reponse.dataIndex) })
+          };
         return (
         <div>
             <Header />
             <h2>Gérer les réponses</h2>
             <div className="divider"/>
             <div className="container">
-                <MDBDataTable btn striped hover data={data} />
+              <MUIDataTable
+                      title={"Liste des propos"}
+                      data={data.rows}
+                      columns={data.columns}
+                      options={options}
+                  />
             </div>
         </div>
         )

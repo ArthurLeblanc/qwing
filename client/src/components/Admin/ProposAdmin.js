@@ -1,8 +1,9 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Header } from "../Permanent/Header"
 import API from "../../utils/API";
-import { Button } from "react-bootstrap";
-import { MDBBtn, MDBDataTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
+import MUIDataTable from "mui-datatables";
+import M from 'materialize-css';
 
 export class ProposAdmin extends React.Component {
 
@@ -12,10 +13,11 @@ export class ProposAdmin extends React.Component {
           allPropos : [],
           data:{columns:[], rows:[]}
           }
+        this.getAllPropos = this.getAllPropos.bind(this)
+        this.fillProposDatatable = this.fillProposDatatable.bind(this)
         this.getAllPropos();
     }
-    //ICI IL FAUT QUE TU BIIIIIIIIIIIIIIINDDDD
-
+    
     getAllPropos = async() => {
         const callPropos = await API.getAllPropos();
         this.setState({allPropos : callPropos.data});
@@ -23,31 +25,32 @@ export class ProposAdmin extends React.Component {
         this.setState({data : v})
     }
 
-    deletePropos = (proposId) => {
+    deletePropos = (index) => {
+        var array = this.state.data.rows
+        let proposId = array[index][0]
         API.deletePropos({"proposId" : proposId})
-        alert("Propos supprimé !")
+        M.toast({html: "Propos supprimé !" ,classes: "green"})
     }
 
     fillProposDatatable = () => {
-      const { allPropos} = this.state
+      const {allPropos} = this.state
         var cdata = {columns:[], rows: []}
         allPropos.map
         ( (propos) => 
           {
-             cdata.rows.push({
-                'id': propos._id,
-                'contenu': propos.contenu,
-                'catégorie': propos.categorie.contenu,
-                'likes': propos.likes,
-                'creator': propos.creator ? propos.creator.email : 'Anonyme',
-                'action': <MDBBtn onClick={() => { this.deletePropos(propos._id) }} color="default" rounded size="sm">Supprimer</MDBBtn>
-            })
+             cdata.rows.push([
+                propos._id,
+                propos.contenu,
+                propos.categorie.contenu,
+                propos.likes,
+                propos.creator ? propos.creator.email : 'Anonyme'
+             ])
         })
         return cdata
     }
 
     render() {
-        const {  data } = this.state;
+        const { data } = this.state;
         const columns= [
             {
               label: '#',
@@ -73,21 +76,27 @@ export class ProposAdmin extends React.Component {
               label: 'Creator',
               field: 'creator',
               sort: 'asc'
-            },
-            {
-              label: 'Action',
-              field: 'action',
             }
           ];
           data.columns = columns
-
+          const options = {
+            filterType: "dropdown",
+            responsive: "scroll",
+            selectableRowsOnClick : "true",
+            onRowsDelete : (d) => d.data.map( (propos) => { this.deletePropos(propos.dataIndex) })
+          };
         return (
         <div>
             <Header />
             <h2>Gérer les propos</h2>
             <div className="divider"/>
             <div className="container">
-                <MDBDataTable btn striped hover data={data} />
+                <MUIDataTable
+                    title={"Liste des propos"}
+                    data={data.rows}
+                    columns={data.columns}
+                    options={options}
+                />
             </div>
         </div>
         )

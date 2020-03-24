@@ -1,8 +1,9 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Header } from "../Permanent/Header"
 import API from "../../utils/API";
-import { Button } from "react-bootstrap";
-import { MDBBtn, MDBDataTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
+import MUIDataTable from "mui-datatables";
+import M from 'materialize-css';
 
 export class CommentairesAdmin extends React.Component {
 
@@ -10,42 +11,47 @@ export class CommentairesAdmin extends React.Component {
         super(props);
         this.state = {
           allCommentaires : [],
-          //data: {columns:[], rows:[]}
+          data: {columns:[], rows:[]}
           }
-        this.getAllCommentaires();
+          this.getAllCommentaires = this.getAllCommentaires.bind(this)
+          this.fillCommentairesDatatable = this.fillCommentairesDatatable.bind(this)
+          this.getAllCommentaires();
     }
 
     getAllCommentaires = async() => {
         const callCommentaires = await API.getAllCommentaires();
         this.setState({allCommentaires : callCommentaires.data})
+        const v = this.fillCommentairesDatatable()
+        this.setState({data : v})
     }
 
-    deleteCommentaire = (commentaireId) => {
-        API.deleteCommentaire({"commentaireId" : commentaireId})
-        alert("Réponse supprimée !")
+    deleteCommentaire = (index) => {
+      var array = this.state.data.rows
+      let commentaireId = array[index][0]
+      API.deleteCommentaire({"commentaireId" : commentaireId})
+      M.toast({html: "Commentaire supprimé !" ,classes: "green"})
     }
 
-    fillCommentairesDatatable = (allCommentaires) => {
-        var data = {columns:[], rows: []}
+    fillCommentairesDatatable = () => {
+        const {allCommentaires} = this.state
+        var cdata = {columns:[], rows: []}
         allCommentaires.map
         ( (commentaire) => 
           {
-             data.rows.push({
-                'id': commentaire._id,
-                'propos': commentaire.propos ? commentaire.propos.contenu : "null",
-                'commentaire': commentaire.contenu,
-                'likes': commentaire.likes,
-                'dislikes': commentaire.dislikes,
-                'creator': commentaire.creator ? commentaire.creator.email : 'Anonyme',
-                'action': <MDBBtn onClick={() => { this.deleteCommentaire(commentaire._id) }} color="default" rounded size="sm">Supprimer</MDBBtn>
-            })
+             cdata.rows.push([
+                commentaire._id,
+                commentaire.propos ? commentaire.propos.contenu : "null",
+                commentaire.contenu,
+                commentaire.likes,
+                commentaire.dislikes,
+                commentaire.creator ? commentaire.creator.email : 'Anonyme'
+             ])
         })
-        return data
+        return cdata
     }
 
     render() {
-        const { allCommentaires } = this.state;
-        var data = this.fillCommentairesDatatable(allCommentaires)
+        const { data } = this.state;
         const columns= [
             {
               label: '#',
@@ -83,14 +89,24 @@ export class CommentairesAdmin extends React.Component {
             }
           ];
           data.columns = columns
-
+          const options = {
+            filterType: "dropdown",
+            responsive: "scroll",
+            selectableRowsOnClick : "true",
+            onRowsDelete : (d) => d.data.map( (com) => { this.deleteCommentaire(com.dataIndex) })
+          };
         return (
         <div>
             <Header />
             <h2>Gérer les commentaires</h2>
             <div className="divider"/>
             <div className="container">
-                <MDBDataTable btn striped hover data={data} />
+              <MUIDataTable
+                  title={"Liste des propos"}
+                  data={data.rows}
+                  columns={data.columns}
+                  options={options}
+              />
             </div>
         </div>
         )
