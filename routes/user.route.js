@@ -26,6 +26,7 @@ router.get('/', login, async (req, res) => {
     try {
         const user = await (await User.findById(req.user.id).select("-password")
         .populate("likesPropos").populate([{path: "likesPropos", populate: {path: "categorie", model: "CategoriePropos"}}, 
+                                            {path: "likesPropos", populate: {path: "creator", model: "User"}},
                                             {path: "likesPropos", populate: {path: "reponses", model: "Reponse"}}, 
                                             {path: "likesPropos", populate: {path: "propos", populate: {path: "commentaires", populate:  {path: "creator", model: "User"} ,model: "Commentaire"}}},
                                             {path: "likesPropos", populate: {path: "reponses", populate: [{path: "categorie", model: "CategorieReponse"}, {path: "creator", model: "User"}] ,model: "Reponse"}}, ])
@@ -177,7 +178,6 @@ async (req, res) => {
     } catch (error) {
         console.error(error.message)
         res.status(500).send("Erreur du serveur")
-        
     }
 })
 

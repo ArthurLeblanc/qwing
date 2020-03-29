@@ -7,7 +7,7 @@ const headers = {
   "auth-token" : token
 };
 
-const burl = "http://qwing.herokuapp.com/api";
+const burl = "https://qwing.herokuapp.com/api";
 
 export default {
 

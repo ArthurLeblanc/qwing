@@ -3,6 +3,7 @@ let mongoose = require('mongoose');
 let cors = require('cors');
 let bodyParser = require('body-parser');
 let dbConfig = require('./config/keys');
+const path = require('path');
 
 // Express Routes
 const userRoute = require('./routes/user.route')
@@ -39,6 +40,11 @@ app.use('/api/propos/', proposRoute)
 app.use('/api/reponses/', reponseRoute)
 app.use('/api/categories/', categorieRoute)
 app.use('/api/commentaires/', commentaireRoute)
+
+// If no API routes are hit, send the React app
+app.use(function(req, res) {
+	res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
 
 
 // PORT
