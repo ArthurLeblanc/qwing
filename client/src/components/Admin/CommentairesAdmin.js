@@ -1,9 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Header } from "../Permanent/Header"
 import API from "../../utils/API";
 import MUIDataTable from "mui-datatables";
 import M from 'materialize-css';
+import Cookies from 'universal-cookie'
 
 export class CommentairesAdmin extends React.Component {
 
@@ -39,7 +39,7 @@ export class CommentairesAdmin extends React.Component {
         ( (commentaire) => 
           {
              cdata.rows.push([
-                commentaire._id,
+                commentaire.created_at,
                 commentaire.propos ? commentaire.propos.contenu : "null",
                 commentaire.contenu,
                 commentaire.likes,
@@ -50,13 +50,25 @@ export class CommentairesAdmin extends React.Component {
         return cdata
     }
 
+    // Création d'un cookie avec la date et heure actuelle juste avant le déchargement de la page
+    componentDidMount() {
+      window.addEventListener("beforeunload", (ev) => {  
+        ev.preventDefault();
+        const cookies = new Cookies()
+        let d = new Date()
+        // expire dans 3 ans
+        d.setTime(d.getTime() + 100000000000)
+        cookies.set('lastCommentairesAdminLoginDate', new Date(), {path: '/', expires: d})
+      });
+    }
+
     render() {
         const { data } = this.state;
         const columns= [
             {
-              label: '#',
-              field: 'id',
-              sort: 'asc'
+              label: 'Date de création',
+              field: 'date',
+              options: {sortDirection: 'desc'}
             },
             {
               label: 'Propos',
@@ -89,17 +101,34 @@ export class CommentairesAdmin extends React.Component {
             }
           ];
           data.columns = columns
+
+          // Récupère le cookie avec la date de dernier login
+          const cookies = new Cookies()
+          const lastLogged = cookies.get('lastCommentairesAdminLoginDate')
+
           const options = {
             filterType: "dropdown",
             responsive: "scroll",
             selectableRowsOnClick : "true",
-            onRowsDelete : (d) => d.data.map( (com) => { this.deleteCommentaire(com.dataIndex) })
+            onRowsDelete : (d) => d.data.map( (com) => { this.deleteCommentaire(com.dataIndex) }),
+            // Permet de changer la couleur des lignes de la datatable, rouge si le propos n'a pas encore été vu par l'admin, vert sinon
+            setRowProps: (row) => {
+              if (!lastLogged) { 
+                return { 
+                  style: { background: "lightCoral" } 
+                } 
+              } else {
+                return {
+                  style: { background: lastLogged < row[0] ?  "lightCoral" : "lightgreen" }
+                }
+              }
+            }
           };
         return (
         <div>
             <Header />
             <h2>Gérer les commentaires</h2>
-            <div className="divider"/>
+            <div className="divider" style={{marginTop: 30, marginBottom: 15}}/>
             <div className="container">
               <MUIDataTable
                   title={"Liste des propos"}
