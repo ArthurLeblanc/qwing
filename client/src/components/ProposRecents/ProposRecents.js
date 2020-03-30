@@ -8,7 +8,9 @@ export class ProposRecents extends React.Component {
   constructor(props){
 	super(props);
 	this.state = {
-		allPropos : []
+    allPropos : [],
+    search : ""
+
 	}
 	
     this.like = this.like.bind(this)
@@ -49,6 +51,27 @@ export class ProposRecents extends React.Component {
     this.setState({allPropos : sortage})
   }
 
+  handleChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  };
+
+  handleSubmit = async() => {
+    const callPropos = await this.getAllPropos();
+    var array = []
+    var index
+    console.log(this.state.search)
+    for (index = 0; index < this.state.allPropos.length; index++) { 
+      console.log(this.state.allPropos[index].contenu)
+      if (String(this.state.allPropos[index].contenu).toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1){
+        array.push(this.state.allPropos[index])
+      }
+    }
+    this.setState({allPropos : array})
+
+  }
+
   disconnect = () => {
     API.logout();
     window.location = "/";
@@ -66,6 +89,12 @@ export class ProposRecents extends React.Component {
 
 		  <h3>Les plus récents</h3>
 			<div className="divider"></div>
+      <label>
+          <input className="form-control" id="search" type="text" placeholder="Search" aria-label="Search" onChange={this.handleChange} />
+        </label>
+        <button className="btn waves-effect waves-light" onClick={this.handleSubmit} type="submit" name="action" value="Envoyer">Submit
+    <i className="material-icons right">send</i>
+  </button>
 			<div className="container" >
 		  {
             allPropos.map
