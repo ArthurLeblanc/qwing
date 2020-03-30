@@ -35,7 +35,7 @@ export class ListeAimee extends React.Component {
     return (
 		<div className="Liste">
 		<Header />
-		  <h2>Liste des propos aimés</h2>
+		  <h2>Liste des propos entendus</h2>
 		  {
             proposAimes.map
               ( (propos, i) => 
@@ -51,7 +51,7 @@ export class ListeAimee extends React.Component {
 							  <span className="card-title"> {propos.contenu} </span>
 							  <div className="row" style={{marginBottom: -20}}>
 							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							  <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
 							</div>
                           </div>
                           <div className="card-action">

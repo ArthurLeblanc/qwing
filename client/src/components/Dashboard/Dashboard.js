@@ -145,7 +145,7 @@ export class Dashboard extends React.Component {
 							  <p>Description : {propos.contenu}</p>
 							  <div className="row" style={{marginBottom: -20}}>
 							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							  <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
 							</div>
                           </div>
                           <div className="card-action">
@@ -156,10 +156,10 @@ export class Dashboard extends React.Component {
 							{
 								blogged ? (
 									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-										Like
+										Déjà entendu !
 									</Button>
 								) : (
-									<p> Vous devez vous connecter pour liker un propos ! </p>
+									<p> Vous devez vous connecter pour pour signaler que vous avez déjà entendu ce propos ! </p>
 								)
 							}
                           </div>

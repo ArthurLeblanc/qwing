@@ -33,7 +33,7 @@ export class Header extends React.Component {
             }
             loginComponent = (
                 <SplitButton title="Mon compte" id="split-button-pull-right">
-                    <MenuItem href="/listeAimee">Mes propos aimés</MenuItem>
+                    <MenuItem href="/listeAimee">Propos déjà entendus</MenuItem>
                     <MenuItem href="/account">Mes infos personnelles</MenuItem>
                     <MenuItem onClick={this.disconnect}>Se déconnecter</MenuItem>
                 </SplitButton>

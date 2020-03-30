@@ -133,7 +133,7 @@ export class Propos extends React.Component {
 							  <span className="card-title"> {propos.contenu} </span>
 							  <div className="row" style={{marginBottom: -20}}>
 							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i className="material-icons left">thumb_up</i> {propos.likes}</span>
+							  <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
 							</div>
                           </div>
                           <div className="card-action">
@@ -147,7 +147,7 @@ export class Propos extends React.Component {
 										Like
 									</Button>
 								) : (
-									<p> Vous devez vous connecter pour liker un propos ! </p>
+									<p> Vous devez vous connecter pour signaler que vous avez déjà entendu ce propos ! </p>
 								)
 							}
                           </div>
