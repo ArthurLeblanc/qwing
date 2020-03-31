@@ -216,12 +216,7 @@ router.put('/edit-infos',
         }
     })
 
-    router.delete('/delete-account',
-    // Conditions pour que la requête soit validée
-    [
-        check('pseudo', 'Entrez un pseudo').not().isEmpty(),
-        check('password', 'Entrez un mot de passe d\'au moins 6 caractères').isLength({min: 6})
-    ],    
+    router.delete('/delete-account',  
     async (req, res) => {
         const errors = validationResult(req)
         // Si la requête n'est pas valide, on affiche les erreurs
