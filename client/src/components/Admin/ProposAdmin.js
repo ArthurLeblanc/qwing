@@ -43,6 +43,7 @@ export class ProposAdmin extends React.Component {
         ( (propos) => 
           {
              cdata.rows.push([
+                propos._id,
                 propos.created_at,
                 propos.contenu,
                 propos.categorie.contenu,
@@ -68,6 +69,11 @@ export class ProposAdmin extends React.Component {
     render() {
         const { data } = this.state;
         const columns= [
+            {
+              label: 'id',
+              field: 'id',
+              options: {display: 'false'}
+            },
             {
               label: 'Date de création',
               field: 'date',
@@ -108,7 +114,7 @@ export class ProposAdmin extends React.Component {
                 } 
               } else {
                 return {
-                  style: { background: lastLogged < row[0] ?  "lightCoral" : "lightgreen" }
+                  style: { background: lastLogged < row[1] ?  "lightCoral" : "lightgreen" }
                 }
               }
             }

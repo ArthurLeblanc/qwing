@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, SplitButton, MenuItem } from "react-bootstrap";
 import { Header } from "../Permanent/Header";
 import API from "../../utils/API";
 
@@ -9,12 +9,16 @@ export class ProposRecents extends React.Component {
 	super(props);
 	this.state = {
     allPropos : [],
+    categorie:"",
+    allCatPropos : [],
     search : ""
 
 	}
-	
+    this.getAllCatPropos = this.getAllCatPropos.bind(this);
+    this.setCategorie = this.setCategorie.bind(this);
     this.like = this.like.bind(this)
     this.getAllPropos()
+    this.getAllCatPropos();
   }
 
   like = async(proposId) => {
@@ -41,6 +45,13 @@ export class ProposRecents extends React.Component {
       this.getAllPropos()
   }
 
+  setCategorie = async(vcategorie) => {
+    this.setState({categorie : vcategorie});
+  }
+  getAllCatPropos = async() => {
+    const callCatPropos = await API.getAllCatPropos()
+    this.setState({allCatPropos : callCatPropos.data});
+  }
 
   getAllPropos = async() => {
     var callPropos = await API.getAllPropos();
@@ -78,11 +89,15 @@ export class ProposRecents extends React.Component {
   };
 
   render () {
-	const { allPropos } = this.state;
-	const blogged = API.isAuth();
-	console.log(blogged)
-    return (
+  const { categorie, allPropos, allCatPropos} = this.state;
+  const blogged = API.isAuth();
+  var sortedPropos = []
+  if (this.state.categorie === "" || this.state.categorie === "Toutes les catégories")
+    sortedPropos = sortedPropos.concat(this.state.allPropos)
+  else 
+    sortedPropos = sortedPropos.concat(this.state.allPropos).filter(item => item.categorie.contenu === this.state.categorie)
 
+    return (
 		<div className="Dashboard">
 		<Header />
 
@@ -93,11 +108,17 @@ export class ProposRecents extends React.Component {
           <input className="form-control" id="search" type="text" placeholder="Search" aria-label="Search" onChange={this.handleChange} />
         </label>
         <button className="btn waves-effect waves-light" onClick={this.handleSubmit} type="submit" name="action" value="Envoyer">Submit
-    <i className="material-icons right">send</i>
-  </button>
+          <i className="material-icons right">send</i>
+       </button>
+       <SplitButton title={ categorie == "" ? "Tri par catégorie" : categorie } id="split-button-pull-right" style={{marginLeft: 10}}>
+        <MenuItem onClick={() => this.setCategorie("Toutes les catégories")}>Toutes les catégories</MenuItem>
+        {allCatPropos.map( (cat, i) => {
+          return( <MenuItem key={i} onClick={() => this.setCategorie(cat.contenu)}>{cat.contenu}</MenuItem> )
+        })}
+        </SplitButton>
 			<div className="container" >
 		  {
-            allPropos.map
+            sortedPropos.map
               ( (propos, i) => 
                 {
                   return(

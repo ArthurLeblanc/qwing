@@ -101,6 +101,12 @@ export class Propos extends React.Component {
   render() {
     const blogged = API.isAuth();
     const { contenu, categorie, allPropos, allCatPropos} = this.state;
+    var sortedPropos = []
+    if (this.state.categorie === "" || this.state.categorie === "Toutes les catégories")
+      sortedPropos = sortedPropos.concat(this.state.allPropos)
+    else 
+      sortedPropos = sortedPropos.concat(this.state.allPropos).filter(item => item.categorie.contenu === this.state.categorie)
+
     return (
       <div className = "Page">
        <Header />
@@ -113,13 +119,17 @@ export class Propos extends React.Component {
           <input className="form-control" id="search" type="text" placeholder="Search" aria-label="Search" onChange={this.handleChange} />
         </label>
         <button className="btn waves-effect waves-light" onClick={this.handleSubmit} type="submit" name="action" value="Envoyer">Submit
-    <i className="material-icons right">send</i>
-  </button>
-  
-
+          <i className="material-icons right">send</i>
+        </button>
+        <SplitButton title={ categorie == "" ? "Tri par catégorie" : categorie } id="split-button-pull-right" style={{marginLeft: 10}}>
+        <MenuItem onClick={() => this.setCategorie("Toutes les catégories")}>Toutes les catégories</MenuItem>
+        {allCatPropos.map( (cat, i) => {
+          return( <MenuItem key={i} onClick={() => this.setCategorie(cat.contenu)}>{cat.contenu}</MenuItem> )
+        })}
+          </SplitButton>
 
           {
-            allPropos.map
+            sortedPropos.map
               ( (propos, i) => 
                 {
                   return(

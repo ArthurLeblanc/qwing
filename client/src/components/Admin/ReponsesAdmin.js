@@ -39,6 +39,7 @@ export class ReponsesAdmin extends React.Component {
         ( (reponse) => 
           {
              cdata.rows.push([
+                reponse._id,
                 reponse.created_at,
                 reponse.propos ? reponse.propos.contenu : "null",
                 reponse.contenu,
@@ -66,6 +67,11 @@ export class ReponsesAdmin extends React.Component {
     render() {
         const { data } = this.state;
         const columns= [
+            {
+              label: 'id',
+              field: 'id',
+              options: {display: 'false'}
+            },
             {
               label: 'Date de création',
               field: 'date',
@@ -125,7 +131,7 @@ export class ReponsesAdmin extends React.Component {
                 } 
               } else {
                 return {
-                  style: { background: lastLogged < row[0] ?  "lightCoral" : "lightgreen" }
+                  style: { background: lastLogged < row[1] ?  "lightCoral" : "lightgreen" }
                 }
               }
             }

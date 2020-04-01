@@ -39,6 +39,7 @@ export class CommentairesAdmin extends React.Component {
         ( (commentaire) => 
           {
              cdata.rows.push([
+                commentaire._id,
                 commentaire.created_at,
                 commentaire.propos ? commentaire.propos.contenu : "null",
                 commentaire.contenu,
@@ -65,6 +66,11 @@ export class CommentairesAdmin extends React.Component {
     render() {
         const { data } = this.state;
         const columns= [
+            {
+              label: 'id',
+              field: 'id',
+              options: {display: 'false'}
+            },
             {
               label: 'Date de création',
               field: 'date',
@@ -119,7 +125,7 @@ export class CommentairesAdmin extends React.Component {
                 } 
               } else {
                 return {
-                  style: { background: lastLogged < row[0] ?  "lightCoral" : "lightgreen" }
+                  style: { background: lastLogged < row[1] ?  "lightCoral" : "lightgreen" }
                 }
               }
             }
