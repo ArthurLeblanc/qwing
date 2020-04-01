@@ -24,15 +24,16 @@ export class Header extends React.Component {
         } else {
             if (API.isAdmin()) {
                 adminComponent = (
-                    <SplitButton title="Espace Administration" id="split-button-pull-right">
+                    <SplitButton title="Espace Administration" id="split-button-pull-right" className = "grey darken-3">
                         <MenuItem href="/admin/propos">Gérer les propos</MenuItem>
                         <MenuItem href="/admin/reponses">Gérer les réponses</MenuItem>
                         <MenuItem href="/admin/commentaires">Gérer les commentaires</MenuItem>
+                        <MenuItem href="/admin/categorie">Ajouter des catégorie</MenuItem>
                     </SplitButton>
                 )
             }
             loginComponent = (
-                <SplitButton title="Mon compte" id="split-button-pull-right">
+                <SplitButton title="Mon compte" id="split-button-pull-right" className = "grey darken-3">
                     <MenuItem href="/listeAimee">Propos déjà entendus</MenuItem>
                     <MenuItem href="/account">Mes infos personnelles</MenuItem>
                     <MenuItem onClick={this.disconnect}>Se déconnecter</MenuItem>
@@ -42,7 +43,7 @@ export class Header extends React.Component {
         return (
         <div className = "menu">
             <nav  className="blue darken-2">
-                <div className="nav-wrapper">
+                <div className="nav-wrapper orange darken-3">
                 <a href="/dashboard" className="brand-logo center">Qwing</a>
                 <ul className="left hide-on-med-and-down">
                     <li><a className="active" href= "/dashboard"><i className="material-icons left">home</i>Home</a></li>

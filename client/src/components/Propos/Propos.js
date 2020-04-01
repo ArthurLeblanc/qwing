@@ -4,7 +4,7 @@ import API from "../../utils/API";
 import 'materialize-css/dist/css/materialize.min.css'
 import M from 'materialize-css'; 
 import { Header } from "../Permanent/Header";
-import { CatPropos } from "../CatPropos/CatPropos";
+import { Categorie } from "../Categorie/Categorie.js";
 
 export class Propos extends React.Component {
 
@@ -118,48 +118,51 @@ export class Propos extends React.Component {
         <label>
           <input className="form-control" id="search" type="text" placeholder="Search" aria-label="Search" onChange={this.handleChange} />
         </label>
-        <button className="btn waves-effect waves-light" onClick={this.handleSubmit} type="submit" name="action" value="Envoyer">Submit
+        <button className="btn waves-effect waves-light grey darken-3" onClick={this.handleSubmit} type="submit" name="action" value="Envoyer">Submit
           <i className="material-icons right">send</i>
         </button>
-        <SplitButton title={ categorie == "" ? "Tri par catégorie" : categorie } id="split-button-pull-right" style={{marginLeft: 10}}>
-        <MenuItem onClick={() => this.setCategorie("Toutes les catégories")}>Toutes les catégories</MenuItem>
-        {allCatPropos.map( (cat, i) => {
-          return( <MenuItem key={i} onClick={() => this.setCategorie(cat.contenu)}>{cat.contenu}</MenuItem> )
-        })}
-          </SplitButton>
-
+        <SplitButton className = "grey darken-3" title={ categorie == "" ? "Tri par catégorie" : categorie } id="split-button-pull-right" style={{marginLeft: 10}}>
+          <MenuItem onClick={() => this.setCategorie("Toutes les catégories")}>Toutes les catégories</MenuItem>
+          {allCatPropos.map( (cat, i) => {
+            return( 
+              <MenuItem key={i} onClick={() => this.setCategorie(cat.contenu)}>{cat.contenu}</MenuItem>
+            )
+          })
+          }
+        </SplitButton>
+        <div className="container" >
           {
             sortedPropos.map
               ( (propos, i) => 
                 {
                   return(
                     <div className="row" key={i}>
-                      <div className="col s12 m6 offset-m3">
-                        <div className="card blue-grey darken-1">
+                      <div className="col s12 m8 offset-m2">
+                        <div className="card grey darken-3">
                           <div className="card-content white-text">
-							<div className="row">
-							  <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
-							</div>
-							  <span className="card-title"> {propos.contenu} </span>
-							  <div className="row" style={{marginBottom: -20}}>
-							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
-							</div>
+                            <div className="row">
+                              <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
+                            </div>
+                              <span className="card-title"> {propos.contenu} </span>
+                              <div className="row" style={{marginBottom: -20}}>
+                              <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
+                              <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
+                            </div>
                           </div>
                           <div className="card-action">
                             <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
                             <a href = {`/${propos._id}/reponse`}>Reponses</a>
                           </div>
-						  <div className="card-action">
-							{
-								blogged ? (
-									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-										Like
-									</Button>
-								) : (
-									<p> Vous devez vous connecter pour signaler que vous avez déjà entendu ce propos ! </p>
-								)
-							}
+                          <div className="card-action">
+                          {
+                            blogged ? (
+                              <Button className = "orange darken-4" onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                                Déjà entendu
+                              </Button>
+                            ) : (
+                              <p> Vous devez vous connecter pour signaler que vous avez déjà entendu ce propos ! </p>
+                            )
+                          }
                           </div>
                         </div>
                       </div>
@@ -168,6 +171,7 @@ export class Propos extends React.Component {
                 }
               )
           }
+          </div>
         </div>
       </div>
 	)

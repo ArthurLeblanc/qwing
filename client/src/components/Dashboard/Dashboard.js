@@ -1,10 +1,13 @@
 import React from "react";
-import { Button, FormGroup, FormControl, ControlLabel, MenuItem, SplitButton } from "react-bootstrap";
 import API from "../../utils/API";
+import { Button, FormGroup, FormControl, ControlLabel, MenuItem, SplitButton } from "react-bootstrap";
 import 'materialize-css/dist/css/materialize.min.css'
+import '../../App.css'
+import img from '../../img/logo.png';
 import M from 'materialize-css'; 
 import { Header } from "../Permanent/Header";
-import { CatPropos } from "../CatPropos/CatPropos";
+import { Categorie } from "../Categorie/Categorie.js";
+
 
 export class Dashboard extends React.Component {
 
@@ -90,40 +93,45 @@ export class Dashboard extends React.Component {
       <div className = "Page">
        <Header />
 	   <div className="container" >
-      		<div className="row">
-        <div className="Dashboard">
-        <h5>Vous avez été victime d'un propos sexiste et vous n'avez pas su répondre ?
-				Partagez votre expérience</h5>
-			<h4>Ecrivez votre propos</h4>
-          <SplitButton title={"Catégorie - " + categorie} id="split-button-pull-right">
-            {
-            allCatPropos.map
-                ( (catPropos, i) => 
-                  {
-                    return(
-                      <div className = "Catpropos" key = {i}>
-                        <Button onClick={() => this.setCategorie(catPropos.contenu)} block bsSize="large" type="submit">
-                          {catPropos.contenu}
-                        </Button>
-                      </div>
-                    )
-                  }
-                )
-            }
-          </SplitButton>
-          <FormGroup controlId="contenu" bsSize="large">
-            <ControlLabel>Contenu</ControlLabel>
-            <FormControl
-              autoFocus
-              type="contenu"
-              value={contenu}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-
-          <Button onClick={this.send} block bsSize="large" type="submit">
-            Ajouter le propos
-          </Button>
+      	<div className="row">
+          <div className="Dashboard">
+            <img src ={img} alt = "logo"></img>
+            <h5>Vous avez été victime d'un propos sexiste et vous n'avez pas su répondre ?
+			      	Partagez votre expérience
+            </h5>
+			      <h4>Ecrivez votre propos</h4>
+            <SplitButton className = "grey darken-3" title={"Catégorie - " + categorie} id="split-button-pull-right">
+              {
+              allCatPropos.map
+                  ( (catPropos, i) => 
+                    {
+                      return(
+                        <div className = "Catpropos" key = {i}>
+                          <Button className ="grey darken-3" onClick={() => this.setCategorie(catPropos.contenu)} block bsSize="large" type="submit">
+                            {catPropos.contenu}
+                          </Button>
+                        </div>
+                      )
+                    }
+                  )
+              }
+            </SplitButton>
+            <FormGroup controlId="contenu" bsSize="large">
+              <ControlLabel>Contenu</ControlLabel>
+              <FormControl
+                autoFocus
+                type="contenu"
+                value={contenu}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <div className="col s12 m2 offset-m5 ">
+              <Button className = "grey darken-3" onClick={this.send} block bsSize="large" type="submit">
+                Ajouter
+              </Button>
+           
+            </div>
+            
           </div>
 		  </div>
           <h3>Top 5 des propos populaires</h3>
@@ -134,19 +142,19 @@ export class Dashboard extends React.Component {
                 {
                   return(
                     <div className="row" key={i}>
-                      <div className="col s12 m6 offset-m3">
-                        <div className="card blue-grey darken-1">
+                      <div className="col s12 m8 offset-m2 ">
+                        <div className="card grey darken-3">
                           <div className="card-content white-text">
-							<div className="row">
-							  <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
-							</div>
-							  <span className="card-title"> Propos</span>
-							  <p>Categorie : {propos.categorie.contenu}</p>
-							  <p>Description : {propos.contenu}</p>
-							  <div className="row" style={{marginBottom: -20}}>
-							  <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-							  <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
-							</div>
+                            <div className="row">
+                              <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
+                            </div>
+                              <span className="card-title"> Propos</span>
+                              <p>Categorie : {propos.categorie.contenu}</p>
+                              <p>Description : {propos.contenu}</p>
+                              <div className="row" style={{marginBottom: -20}}>
+                              <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
+                              <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
+                            </div>
                           </div>
                           <div className="card-action">
                             <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
@@ -155,7 +163,7 @@ export class Dashboard extends React.Component {
 						  <div className="card-action">
 							{
 								blogged ? (
-									<Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+									<Button className = "orange darken-4" onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
 										Déjà entendu !
 									</Button>
 								) : (

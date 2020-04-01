@@ -28,3 +28,7 @@ li a:hover:not(.active) {
 }
 
  FIN BARRE DE NAVIGATION */
+
+ .btn {
+	 background-color: grey darken-3;
+ }

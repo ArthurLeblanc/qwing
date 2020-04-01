@@ -3,7 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../../utils/API";
 import { Header } from "../Permanent/Header";
 
-export class CatPropos extends React.Component {
+export class Categorie extends React.Component {
 
   constructor(propos){
     super(propos);
@@ -70,20 +70,29 @@ export class CatPropos extends React.Component {
     return (
       <div className = "Page">
         <Header />
-        <FormGroup controlId="contenu" bsSize="large">
-            <ControlLabel>Categorie</ControlLabel>
-            <FormControl
-              autoFocus
-              type="contenu"
-              value={contenu}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
+        <h3>Ecrivez le nom de la catégorie souhaitée</h3>
+        <div className="row">
+          <div className="col s12 m8 offset-m2 ">
+            <FormGroup controlId="contenu" bsSize="large">
+              <ControlLabel>Categorie</ControlLabel>
+              <FormControl
+                autoFocus
+                type="contenu"
+                value={contenu}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+          </div>
+        </div>
         <div className="CategorieP">
           <h3> Categorie Propos</h3>
-          <Button onClick={() => this.cPropos()} block bsSize="large" type="submit">
-            Ajouter la categorie Propos
-          </Button>
+          <div className = "row">
+            <div className=" col s12 m2 offset-m5 ">
+              <Button className = "grey darken-3"  onClick={() => this.cPropos()} block bsSize="large" type="submit">
+                Ajouter la categorie Propos
+              </Button>
+            </div>
+          </div>
           {
             allCatPropos.map
               ( (CatPropos, i) => 
@@ -113,10 +122,13 @@ export class CatPropos extends React.Component {
                   }
                 )
             }
-
-            <Button onClick={() => this.cReponse()} block bsSize="large" type="submit">
-              Ajouter la categorie Rep
-            </Button>
+              <div className = "row">
+                <div className=" col s12 m2 offset-m5 ">
+                  <Button className = "grey darken-3" onClick={() => this.cReponse()} block bsSize="large" type="submit">
+                    Ajouter la categorie Rep
+                  </Button>
+                </div>
+              </div>
          </div>
       </div>
 	)

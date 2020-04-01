@@ -2,7 +2,7 @@ import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel, SplitButton } from "react-bootstrap";
 import API from "../../utils/API";
 import 'materialize-css/dist/css/materialize.min.css'
-import { CatPropos } from "../CatPropos/CatPropos";
+import { Categorie } from "../Categorie/Categorie.js";
 import { Timestamp } from "mongodb";
 import { Header } from "../Permanent/Header";
 
@@ -153,14 +153,14 @@ export class Reponse extends React.Component {
       <div className="row">
         <div className="addPropos">
         <h3>Ecrivez votre reponse</h3>
-        <SplitButton title="Categorie" id="split-button-pull-right">
+        <SplitButton className = "grey darken-3" title="Categorie" id="split-button-pull-right">
             {
             allCatReponse.map
                 ( (catReponse, i) => 
                   {
                     return(
                       <div className = "Catpropos" key = {i}>
-                        <Button onClick={() => this.setCategorie(catReponse.contenu)} block bsSize="large" type="submit">
+                        <Button className = "grey darken-3" onClick={() => this.setCategorie(catReponse.contenu)} block bsSize="large" type="submit">
                           {catReponse.contenu}
                         </Button>
                       </div>
@@ -187,15 +187,18 @@ export class Reponse extends React.Component {
               onChange={this.handleChange}
             />
           </FormGroup>
-          
-          <Button onClick={this.send} block bsSize="large" type="submit">
-            Ajouter la reponse
-          </Button>
-      </div>
+          <div className = "row">
+            <div className=" col s12 m2 offset-m5 ">
+              <Button className = "grey darken-3" onClick={this.send} block bsSize="large" type="submit">
+                Ajouter
+              </Button>
+            </div>
+          </div>
+        </div>
           <div className="divider" style={{marginTop: 30, marginBottom: 15}}></div>
           <div className="row">
-            <div className="col s12 m6 offset-m3">
-              <div className="card blue-grey darken-1">
+            <div className="col s12 m8 offset-m2">
+              <div className="card grey darken-3">
                 <div className="card-content white-text">
                   <span className="card-title">  Propos sélectionné </span>
                   <p>Description : {propos.contenu}</p>
@@ -211,7 +214,7 @@ export class Reponse extends React.Component {
                 <div className="card-action">
                   {
                     blogged? (
-                      <Button onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                      <Button className = "orange darken-4" onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
                         Like
                       </Button>
                     ) : (
@@ -230,8 +233,8 @@ export class Reponse extends React.Component {
                 {
                   return(
                     <div className="row" key = {i}>
-                      <div className="col s12 m6 offset-m3">
-                        <div className="card blue-grey darken-1">
+                      <div className="col s12 m8 offset-m2">
+                        <div className="card grey darken-3">
                           <div className="card-content white-text">
                             <span className="card-title"> Réponse</span>
                             <p> Description : {reponse.contenu}</p>
@@ -244,10 +247,10 @@ export class Reponse extends React.Component {
                             {
                               blogged? (
                                 <div>
-                                  <Button onClick={() => this.likeRep(reponse._id)} block bsSize="large" type="submit">
+                                  <Button className = "orange darken-4" onClick={() => this.likeRep(reponse._id)} block bsSize="large" type="submit">
                                     Like
                                   </Button>
-                                  <Button onClick={() => this.dislikeRep(reponse._id)} block bsSize="large" type="submit">
+                                  <Button className = "orange darken-4" onClick={() => this.dislikeRep(reponse._id)} block bsSize="large" type="submit">
                                     Dislike
                                   </Button>
                                   </div>
