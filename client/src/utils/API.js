@@ -108,6 +108,10 @@ export default {
     return axios.delete(`${burl}/propos/dislike-propos`, {headers: headers, data: send});
   },
 
+  search: function(send){
+    return axios.post(`${burl}/propos/search`, send, { headers: headers });
+  },
+
   /*----------------- COMMENTAIRE --------------*/
 
   addCommentaire: function(send){

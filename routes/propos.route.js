@@ -32,6 +32,17 @@ router.get('/', (req, res) => {
     .sort({likes: -1})
 })
 
+// Retourne le propos correspondant à l'id
+router.post('/search', (req, res, next) => {
+  const search = req.body.search
+  ProposSchema.findOne({$text: {$search: search}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).exec((error, data) => {
+    if (error)
+      return next(error)
+    else
+      res.json(data)
+  })
+})
+
 // Retourne les propos TOP 5
 router.get('/top5', (req, res) => {
   ProposSchema.find((error, data) => {
@@ -39,7 +50,7 @@ router.get('/top5', (req, res) => {
         return next(error)
     else
         res.json(data)
-}).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo')
+  }).populate('categorie').populate('reponses').populate('commentaires').populate('creator', '_id email pseudo')
 })
 
 // Retourne le propos correspondant à l'id
@@ -375,5 +386,6 @@ router.delete('/dislike-propos', login, async (req, res, next) => {
     res.status(500).send("Erreur du serveur")
   }
 })
+
 
 module.exports = router;

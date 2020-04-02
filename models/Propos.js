@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 let proposSchema = new Schema({
   contenu: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   likes: {
     type: Number,
@@ -32,7 +33,9 @@ let proposSchema = new Schema({
       }
   ]
 },
-{ timestamps: { createdAt: "created_at" } 
+{ timestamps: { createdAt: "created_at" }
   })
+  
+proposSchema.index({'contenu': 'text'})
 
 module.exports = mongoose.model('Propos', proposSchema)

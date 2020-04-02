@@ -1,6 +1,6 @@
 import React from "react";
 import API from "../../utils/API";
-import { Button, FormGroup, FormControl, ControlLabel, MenuItem, SplitButton } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, MenuItem, SplitButton, Modal } from "react-bootstrap";
 import 'materialize-css/dist/css/materialize.min.css'
 import '../../App.css'
 import img from '../../img/logo.png';
@@ -18,12 +18,16 @@ export class Dashboard extends React.Component {
       categorie:"",
       proposId : "",
       allPropos : [],
-      allCatPropos : []
+      allCatPropos : [],
+      showModal : false,
+      search: ""
   	}
 
 	this.getAllCatPropos = this.getAllCatPropos.bind(this);
 	this.getAllPropos = this.getAllPropos.bind(this);
   this.like = this.like.bind(this);
+  this.handleClose = this.handleClose.bind(this);
+  this.handleShow = this.handleShow.bind(this);
   this.setCategorie = this.setCategorie.bind(this);
 
   this.getAllCatPropos();
@@ -72,23 +76,45 @@ export class Dashboard extends React.Component {
     if (!contenu || contenu.length === 0) return;
     if (!categorie || categorie.length === 0) return;
     try {
-	  const { data } = await API.addPropos({ contenu, categorie});
-      window.location = "/dashboard";
+      const { data } = await API.search({"search":contenu})
+      if (data && data.score > 2) {
+        this.setState({search: data.contenu})
+        this.handleShow()
+      } else {
+        const { data } = await API.addPropos({ contenu, categorie});
+        window.location = "/dashboard";
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  addPropos = async () => {
+    const { contenu, categorie} = this.state;
+    if (!contenu || contenu.length === 0) return;
+    if (!categorie || categorie.length === 0) return;
+    try {
+      const { data } = await API.addPropos({ contenu, categorie});
+      window.location = "/dashboard";
+    } catch (error) {
+      console.error(error)
+    }
+  }
   
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     });
   };
-  
+
+  handleShow = () => this.setState({showModal : true});
+
+  handleClose = () => this.setState({showModal : false});
+
   render() {
     const blogged = API.isAuth();
 	const isadmin = API.isAdmin();
-    const { contenu, categorie, allPropos, allCatPropos, top5} = this.state;
+    const { contenu, categorie, allPropos, allCatPropos, top5, showModal, search} = this.state;
     return (
       <div className = "Page">
        <Header />
@@ -135,7 +161,20 @@ export class Dashboard extends React.Component {
           </div>
 		  </div>
           <h3>Top 5 des propos populaires</h3>
-
+          <Modal show={showModal} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Un propos similaire existe déjà</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{search}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.addPropos}>
+              Mon propos est différent !
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
+              Annuler
+            </Button>
+          </Modal.Footer>
+        </Modal>
           {
             allPropos.map
               ( (propos, i) => 
@@ -180,6 +219,7 @@ export class Dashboard extends React.Component {
           }
         </div>
       </div>
+      
 	)
   }
 }
