@@ -178,43 +178,41 @@ export class Dashboard extends React.Component {
           {
             allPropos.map
               ( (propos, i) => 
-                {
-                  return(
-                    <div className="row" key={i}>
-                      <div className="col s12 m8 offset-m2 ">
-                        <div className="card grey darken-3">
-                          <div className="card-content white-text">
-                            <div className="row">
-                              <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
-                            </div>
-                              <span className="card-title"> Propos</span>
-                              <p>Categorie : {propos.categorie.contenu}</p>
-                              <p>Description : {propos.contenu}</p>
-                              <div className="row" style={{marginBottom: -20}}>
-                              <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
-                              <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
-                            </div>
+              {
+                return(
+                  <div className="row" key={i}>
+                    <div className="col s12 m8 offset-m2">
+                      <div className="card grey darken-3">
+                        <div className="card-content white-text">
+                          <div className="row">
+                            <span className="left">Proposé par :  {propos.creator != undefined ? propos.creator.pseudo : "Anonyme"} - {propos.categorie.contenu}</span>
                           </div>
-                          <div className="card-action">
-                            <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
-                            <a href = {`/${propos._id}/reponse`}>Reponses</a>
+                            <span className="card-title"> {propos.contenu} </span>
+                            <div className="row" style={{marginBottom: -20}}>
+                            <span className= "bottom left">Créé le :  {propos.created_at.substring(0,10)}</span>
+                            <span className= "bottom right"><i className="material-icons left">hearing</i> {propos.likes}</span>
                           </div>
-						  <div className="card-action">
-							{
-								blogged ? (
-									<Button className = "orange darken-4" onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
-										Déjà entendu !
-									</Button>
-								) : (
-									<p> Vous devez vous connecter pour pour signaler que vous avez déjà entendu ce propos ! </p>
-								)
-							}
-                          </div>
+                        </div>
+                        <div className="card-action">
+                          <a href = {`/${propos._id}/commentaire`}>Commentaires</a>
+                          <a href = {`/${propos._id}/reponse`}>Reponses</a>
+                        </div>
+                        <div className="card-action">
+                        {
+                          blogged ? (
+                            <Button className = "orange darken-4" onClick={() => this.like(propos._id)} block bsSize="large" type="submit">
+                              Déjà entendu
+                            </Button>
+                          ) : (
+                            <p> Vous devez vous connecter pour signaler que vous avez déjà entendu ce propos ! </p>
+                          )
+                        }
                         </div>
                       </div>
                     </div>
-                  )
-                }
+                  </div>
+                )
+              }
               )
           }
         </div>
